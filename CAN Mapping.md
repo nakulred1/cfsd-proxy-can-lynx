@@ -1,4 +1,6 @@
-CAN Mapping
+### CAN Mapping
+
+lynx-v0.1.0.odvd <-> lynx19gw.dbc
 
 |    CAN message    |       CAN signal       | Lynx message                            |    msg signal     | sensor/req/log |      unit       |
 | :---------------: | :--------------------: | --------------------------------------- | :---------------: | :------------: | :-------------: |
@@ -32,9 +34,9 @@ CAN Mapping
 
 
 
-Lynx Message to OpenDLV message
+### Lynx Message to OpenDLV message
 
-
+lynx-v0.1.0.odvd <-> opendlv-standard-message-set-v0.9.7.odvd
 
 |            OpenDLV message            | sender stamp | Lynx message                            |    msg signal     | sensor/req/log |      unit       |
 | :-----------------------------------: | :----------: | --------------------------------------- | :---------------: | :------------: | :-------------: |
@@ -59,17 +61,3 @@ Lynx Message to OpenDLV message
 |                                       |     1201     |                                         |  pressureEBSLine  |      log       |       bar       |
 |                                       |     1203     |                                         |  pressureEBSAct   |      log       |       bar       |
 |  opendlv::proxy::SwitchStateReading   |     1401     |                                         |      asState      |      log       |     states      |
-
-Sending time trigger:
-
-```
-auto atFrequency{[&ps3controller, &ANGLECONVERSION, &VERBOSE, &od4, &od4pwm]() -> bool
-    {
-      
-      return true;
-    }};
-        
-
-    od4.timeTrigger(FREQ, atFrequency);
-```
-
