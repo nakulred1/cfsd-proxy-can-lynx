@@ -312,36 +312,41 @@ int32_t main(int32_t argc, char **argv) {
                 torqueRightGet = true;
                 torqueRightValue = torqueReq.torque();
             }else if(env.senderStamp() == 1500){// Left motor only send when torque Right and Left both received
-                int torqueLeftValue = torqueReq.torque();
+                int tmpTorqueLeftValue  = torqueReq.torque();
+                int tmpTorqueRightValue = torqueRightValue;
                 if(torqueRightGet == true){
                     torqueRightGet = false;
                     //send the message
                     // Message to encode: LYNX19GW_AS_TORQUE_REQ_FRAME_ID
-                    if(brakeState < 2){
+                    if(brakeState >= 2){
                         brakeState = 0;
-                        lynx19gw_as_torque_req_t tmp;
-                        memset(&tmp, 0, sizeof(tmp));
-                        // The following msg would have to be passed to this encoder externally.
-                        opendlv::proxyCANWriting::ASTorque msg;
-                        tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(torqueLeftValue);
-                        tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(torqueRightValue);
-                        //The following statement packs the encoded values into a CAN frame.
-                        std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right <<std::endl;
-                        uint8_t buffer[8];
-                        int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
-                        if ( (0 < len) && (-1 < socketCAN) ) {
-#ifdef __linux__
-                            struct can_frame frame;
-                            frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
-                            frame.can_dlc = len;
-                            memcpy(frame.data, buffer, 8);
-                            int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
-                            if (!(0 < nbytes)) {
-                                std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
-                            }
-#endif
+                        tmpTorqueRightValue = 0;
+                        tmpTorqueLeftValue  = 0;
                     }
+                    lynx19gw_as_torque_req_t tmp;
+                    memset(&tmp, 0, sizeof(tmp));
+                    // The following msg would have to be passed to this encoder externally.
+                    opendlv::proxyCANWriting::ASTorque msg;
+                    tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(tmpTorqueLeftValue);
+                    tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(tmpTorqueRightValue);
+                    //The following statement packs the encoded values into a CAN frame.
+                    std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right <<std::endl;
+                    uint8_t buffer[8];
+                    int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
+                    if ( (0 < len) && (-1 < socketCAN) ) {
+#ifdef __linux__
+                        struct can_frame frame;
+                        frame.can_id = LYNX19GW_AS_TORQUE_REQ_FRAME_ID;
+                        frame.can_dlc = len;
+                        memcpy(frame.data, buffer, 8);
+                        int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
+                        std::clog<<"wrote!"<<std::endl;
+                        if (!(0 < nbytes)) {
+                            std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
+                        }
+#endif
                 }
+                
             }
         }};
         od4.dataTrigger(opendlv::proxy::TorqueRequest::ID(), onTorqueRequest);
@@ -405,7 +410,6 @@ int32_t main(int32_t argc, char **argv) {
                     cluon::data::TimeStamp sampleTimeStamp;
                     sampleTimeStamp.seconds(socketTimeStamp.tv_sec)
                                    .microseconds(socketTimeStamp.tv_usec);
-                    std::cout<<"...";
                     decode(sampleTimeStamp, frame.can_id, frame.data, frame.can_dlc);
                 }
             }
