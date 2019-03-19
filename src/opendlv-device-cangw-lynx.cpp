@@ -39,6 +39,9 @@
 #include <string>
 #include <sstream>
 
+
+std::mutex as_Sensor_update_mutex;//This is a mutex lock for 
+
 int32_t main(int32_t argc, char **argv) {
     int32_t retCode{1};
     auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
@@ -228,6 +231,7 @@ int32_t main(int32_t argc, char **argv) {
         opendlv::proxyCANWriting::ASStatus msgASStatus;
         auto onSwitchStateReading = [&msgASStatus](cluon::data::Envelope &&env){
             opendlv::proxy::SwitchStateReading sstateReading = cluon::extractMessage<opendlv::proxy::SwitchStateReading>(std::move(env));
+            std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
             if(env.senderStamp() == 1401 ){//Switch AS State
                 msgASStatus.asState(sstateReading.state());
             }else if(env.senderStamp() == 1404){// Ready to drive
@@ -237,6 +241,7 @@ int32_t main(int32_t argc, char **argv) {
         od4.dataTrigger(opendlv::proxy::SwitchStateReading::ID(), onSwitchStateReading);
 
         auto onGroundSteeringReading=[&msgASStatus](cluon::data::Envelope &&env){
+            std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
             opendlv::proxy::GroundSteeringReading groundSpeedReading =  cluon::extractMessage<opendlv::proxy::GroundSteeringReading>(std::move(env));
             if(env.senderStamp() == 1200){//Steering actuator reading
                 msgASStatus.steeringPosition(groundSpeedReading.groundSteering());
@@ -248,6 +253,8 @@ int32_t main(int32_t argc, char **argv) {
 
         auto onPressureReading =[&msgASStatus](cluon::data::Envelope &&env){
             opendlv::proxy::PressureReading pressureReading = cluon::extractMessage<opendlv::proxy::PressureReading>(std::move(env));
+
+            std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
             if (env.senderStamp() == 1201){ // EBS Line
                 msgASStatus.pressureEBSLine(pressureReading.pressure());
             }else if (env.senderStamp() == 1202){ // Service tank
@@ -267,16 +274,22 @@ int32_t main(int32_t argc, char **argv) {
         auto as2dlThread{[&msgASStatus,&socketCAN,&od4,AS2DLFREQ](){
             auto as2dlAtFrequency{[&msgASStatus,&socketCAN]() -> bool{
             // The following msg would have to be passed to this encoder externally.
+            opendlv::proxyCANWriting::ASStatus msgASStatusCpy;
+            {
+                std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
+                msgASStatusCpy = msgASStatus;
+            }
+            
             lynx19gw_as_dl_sensors_t tmp;
             memset(&tmp, 0, sizeof(tmp));
-            tmp.as_state = lynx19gw_as_dl_sensors_as_state_encode(msgASStatus.asState());
-            tmp.steering_position = lynx19gw_as_dl_sensors_steering_position_encode(msgASStatus.steeringPosition());
-            tmp.rack_position = lynx19gw_as_dl_sensors_rack_position_encode(msgASStatus.rackPosition());
-            tmp.pressure_ebs_act = lynx19gw_as_dl_sensors_pressure_ebs_act_encode(msgASStatus.pressureEBSAct());
-            tmp.pressure_ebs_line = lynx19gw_as_dl_sensors_pressure_ebs_line_encode(msgASStatus.pressureEBSLine());
-            tmp.pressure_service = lynx19gw_as_dl_sensors_pressure_service_encode(msgASStatus.pressureService());
-            tmp.pressure_regulator = lynx19gw_as_dl_sensors_pressure_regulator_encode(msgASStatus.pressureRegulator());
-            tmp.as_rtd = lynx19gw_as_dl_sensors_as_rtd_encode(msgASStatus.asRedyToDrive());
+            tmp.as_state = lynx19gw_as_dl_sensors_as_state_encode(msgASStatusCpy.asState());
+            tmp.steering_position = lynx19gw_as_dl_sensors_steering_position_encode(msgASStatusCpy.steeringPosition());
+            tmp.rack_position = lynx19gw_as_dl_sensors_rack_position_encode(msgASStatusCpy.rackPosition());
+            tmp.pressure_ebs_act = lynx19gw_as_dl_sensors_pressure_ebs_act_encode(msgASStatusCpy.pressureEBSAct());
+            tmp.pressure_ebs_line = lynx19gw_as_dl_sensors_pressure_ebs_line_encode(msgASStatusCpy.pressureEBSLine());
+            tmp.pressure_service = lynx19gw_as_dl_sensors_pressure_service_encode(msgASStatusCpy.pressureService());
+            tmp.pressure_regulator = lynx19gw_as_dl_sensors_pressure_regulator_encode(msgASStatusCpy.pressureRegulator());
+            tmp.as_rtd = lynx19gw_as_dl_sensors_as_rtd_encode(msgASStatusCpy.asRedyToDrive());
             // The following statement packs the encoded values into a CAN frame.
             uint8_t buffer[8];
             int len = lynx19gw_as_dl_sensors_pack(buffer, &tmp, 8);
