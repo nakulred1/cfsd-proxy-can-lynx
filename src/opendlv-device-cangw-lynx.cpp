@@ -72,7 +72,7 @@ int32_t main(int32_t argc, char **argv) {
                     msg.brake(lynx19gw_nf_nr_sensors_1_brake_decode(tmp.brake));
                     msg.throttle(lynx19gw_nf_nr_sensors_1_throttle_decode(tmp.throttle));
                     // The following block is automatically added to demonstrate how to display the received values.
-                    {
+                    if (VERBOSE){
                         std::stringstream sstr;
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
@@ -96,7 +96,7 @@ int32_t main(int32_t argc, char **argv) {
                     msg.wheelFrontLeft(lynx19gw_nf_nr_sensors_2_wheel_speed_fl_decode(tmp.wheel_speed_fl));
                     msg.wheelFrontRight(lynx19gw_nf_nr_sensors_2_wheel_speed_fr_decode(tmp.wheel_speed_fr));
                     // The following block is automatically added to demonstrate how to display the received values.
-                    {
+                    if (VERBOSE) {
                         std::stringstream sstr;
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
@@ -121,7 +121,7 @@ int32_t main(int32_t argc, char **argv) {
                     msg.wheelRareLeft(lynx19gw_nr_dl_sensors_1_wheel_speed_rl_decode(tmp.wheel_speed_rl));
                     msg.wheelRareRight(lynx19gw_nr_dl_sensors_1_wheel_speed_rr_decode(tmp.wheel_speed_rr));
                     // The following block is automatically added to demonstrate how to display the received values.
-                    {
+                    if (VERBOSE) {
                         std::stringstream sstr;
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                     [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
@@ -151,7 +151,7 @@ int32_t main(int32_t argc, char **argv) {
                     msg.dlStatus(lynx19gw_dl_as_status_dl_status_decode(tmp.dl_status));
                     msg.accSoC(lynx19gw_dl_as_status_acc_so_c_decode(tmp.acc_so_c));
                     // The following block is automatically added to demonstrate how to display the received values.
-                    {
+                    if (VERBOSE) {
                         std::stringstream sstr;
                         msg.accept([](uint32_t, const std::string &, const std::string &) {},
                                 [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
@@ -177,8 +177,8 @@ int32_t main(int32_t argc, char **argv) {
                     msgAccSoC.voltage(msg.accSoC());
                     od4.send(msgAccSoC,ts,1921);
 
-                    opendlv::proxy::VoltageReading msgDlStatus;
-                    msgDlStatus.voltage(msg.dlStatus());
+                    opendlv::proxy::SwitchStateReading msgDlStatus;
+                    msgDlStatus.state(msg.dlStatus());
                     od4.send(msgDlStatus,ts,1924);
                 }
             }   
@@ -229,40 +229,64 @@ int32_t main(int32_t argc, char **argv) {
         
 // Encode Vehicle State
         opendlv::proxyCANWriting::ASStatus msgASStatus;
-        auto onSwitchStateReading = [&msgASStatus](cluon::data::Envelope &&env){
+        auto onSwitchStateReading = [&msgASStatus,VERBOSE](cluon::data::Envelope &&env){
             opendlv::proxy::SwitchStateReading sstateReading = cluon::extractMessage<opendlv::proxy::SwitchStateReading>(std::move(env));
             std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
             if(env.senderStamp() == 1401 ){//Switch AS State
                 msgASStatus.asState(sstateReading.state());
+                if (VERBOSE){
+                    std::cerr << "received asState:"<< sstateReading.state() <<std::endl;
+                }
             }else if(env.senderStamp() == 1404){// Ready to drive
                 msgASStatus.asRedyToDrive(sstateReading.state());
+                if (VERBOSE){
+                    std::cerr << "received asRedyToDrive:"<< sstateReading.state() <<std::endl;
+                }
             }
         };
         od4.dataTrigger(opendlv::proxy::SwitchStateReading::ID(), onSwitchStateReading);
 
-        auto onGroundSteeringReading=[&msgASStatus](cluon::data::Envelope &&env){
+        auto onGroundSteeringReading=[&msgASStatus,VERBOSE](cluon::data::Envelope &&env){
             std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
             opendlv::proxy::GroundSteeringReading groundSpeedReading =  cluon::extractMessage<opendlv::proxy::GroundSteeringReading>(std::move(env));
             if(env.senderStamp() == 1200){//Steering actuator reading
                 msgASStatus.steeringPosition(groundSpeedReading.groundSteering());
+                if (VERBOSE){
+                    std::cerr << "received steeringPosition:"<< groundSpeedReading.groundSteering() <<std::endl;
+                }
             }else if(env.senderStamp() == 1206){//steering rack reading
                 msgASStatus.rackPosition(groundSpeedReading.groundSteering());
+                if (VERBOSE){
+                    std::cerr << "received rackPosition:"<< groundSpeedReading.groundSteering() <<std::endl;
+                }
             }
         };
         od4.dataTrigger(opendlv::proxy::GroundSteeringReading::ID(), onGroundSteeringReading);
 
-        auto onPressureReading =[&msgASStatus](cluon::data::Envelope &&env){
+        auto onPressureReading =[&msgASStatus,VERBOSE](cluon::data::Envelope &&env){
             opendlv::proxy::PressureReading pressureReading = cluon::extractMessage<opendlv::proxy::PressureReading>(std::move(env));
 
             std::lock_guard<std::mutex> l(as_Sensor_update_mutex);
             if (env.senderStamp() == 1201){ // EBS Line
                 msgASStatus.pressureEBSLine(pressureReading.pressure());
+                if (VERBOSE){
+                    std::cerr << "received pressureEBSLine:"<<pressureReading.pressure()<<std::endl;
+                }
             }else if (env.senderStamp() == 1202){ // Service tank
                 msgASStatus.pressureService(pressureReading.pressure());
+                if (VERBOSE){
+                    std::cerr << "received pressureService:"<< pressureReading.pressure()<<std::endl;
+                }
             }else if (env.senderStamp() == 1203){ // EBS Act
                 msgASStatus.pressureEBSAct(pressureReading.pressure());
+                if (VERBOSE){
+                    std::cerr << "received pressureEBSAct:"<<pressureReading.pressure()<<std::endl;
+                }
             }else if (env.senderStamp() == 1205){ // Service regulator
                 msgASStatus.pressureRegulator(pressureReading.pressure());
+                if (VERBOSE){
+                    std::cerr << "received pressureRegulator:"<<pressureReading.pressure()<<std::endl;
+                }
             }
         };
         od4.dataTrigger(opendlv::proxy::PressureReading::ID(), onPressureReading);
@@ -317,7 +341,7 @@ int32_t main(int32_t argc, char **argv) {
         // another   is brake is not larger than 3 brakeState>2
         bool torqueRightGet = false;
         int torqueRightValue = 0;
-        auto onTorqueRequest = [&torqueRightValue,&torqueRightGet,&socketCAN,&brakeState](cluon::data::Envelope &&env){
+        auto onTorqueRequest = [&torqueRightValue,&torqueRightGet,&socketCAN,&brakeState,VERBOSE](cluon::data::Envelope &&env){
             opendlv::proxy::TorqueRequest torqueReq = cluon::extractMessage<opendlv::proxy::TorqueRequest>(std::move(env));
             if(env.senderStamp() == 1501 ){//Right motor 
                 torqueRightGet = true;
@@ -340,7 +364,9 @@ int32_t main(int32_t argc, char **argv) {
                     tmp.torque_set_point_left = lynx19gw_as_torque_req_torque_set_point_left_encode(tmpTorqueLeftValue);
                     tmp.torque_set_point_right = lynx19gw_as_torque_req_torque_set_point_right_encode(tmpTorqueRightValue);
                     //The following statement packs the encoded values into a CAN frame.
-                    std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right <<std::endl;
+                    if (VERBOSE){
+                        std::clog << "Received msg Torque: Left: " << tmp.torque_set_point_left << " Right: "<< tmp.torque_set_point_right;
+                    }
                     uint8_t buffer[8];
                     int len = lynx19gw_as_torque_req_pack(buffer, &tmp, 8);
                     if ( (0 < len) && (-1 < socketCAN) ) {
@@ -350,7 +376,9 @@ int32_t main(int32_t argc, char **argv) {
                         frame.can_dlc = len;
                         memcpy(frame.data, buffer, 8);
                         int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
-                        std::clog<<"wrote!"<<std::endl;
+                        if (VERBOSE){
+                            std::clog<<"wrote!"<<std::endl;
+                        }
                         if (!(0 < nbytes)) {
                             std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" << std::endl;
                         }
