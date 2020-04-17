@@ -1,4 +1,4 @@
-# cfsd-proxy-cangw
+# cfsd-proxy-can-lynx
 cfsd proxy CAN getway
 
 Mapping the CAN messages to Opendlv messages
