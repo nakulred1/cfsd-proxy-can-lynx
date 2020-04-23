@@ -234,6 +234,11 @@ message opendlv.proxy.WheelSpeedRequest [id = 1094] {
   float wheelSpeed [id = 1];
 }
 
+message opendlv.proxy.TestMessageRequest [id = 1095] {
+  string testMessage [id = 1];
+}
+
+
 // V2xRequest?
 
 

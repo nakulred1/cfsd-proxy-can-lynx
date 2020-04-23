@@ -140,6 +140,8 @@ int32_t main(int32_t argc, char **argv) {
                 }
             }
 
+           
+            
             // AS status Reading
             if (LYNX19GW_DL_AS_STATUS_FRAME_ID == canFrameID) {
                 lynx19gw_dl_as_status_t tmp;
@@ -180,6 +182,9 @@ int32_t main(int32_t argc, char **argv) {
                     opendlv::proxy::SwitchStateReading msgDlStatus;
                     msgDlStatus.state(msg.dlStatus());
                     od4.send(msgDlStatus,ts,1924);
+
+
+
                 }
             }   
         };
@@ -190,6 +195,15 @@ int32_t main(int32_t argc, char **argv) {
         int socketCAN;
 
         std::cerr << "[opendlv-device-cangw-lynx] Opening " << CANDEVICE << "... ";
+                    cluon::data::TimeStamp ts;
+                    opendlv::proxy::TestMessageRequest helloWorldMsg;
+                    helloWorldMsg.testMessage("Hello Guys");
+                    od4.send(helloWorldMsg,ts,1905);
+                    if (VERBOSE) {
+                        std::cout << "Test Message = " << helloWorldMsg.testMessage()<<std::endl;
+                    }
+
+
 #ifdef __linux__
         // Create socket for SocketCAN.
         socketCAN = socket(PF_CAN, SOCK_RAW, CAN_RAW);
