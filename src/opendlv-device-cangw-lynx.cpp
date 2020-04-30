@@ -39,13 +39,33 @@
 #include <string>
 #include <sstream>
 
+class TestClass {
+    public:
+        opendlv::proxy::TestMessageRequest step(double) noexcept;
+};
 
 std::mutex as_Sensor_update_mutex;//This is a mutex lock for 
+
+
+//Test functions
+
+opendlv::proxy::TestMessageRequest TestClass::step(double) noexcept
+{
+    opendlv::proxy::TestMessageRequest helloWorldMsg;
+    helloWorldMsg.testLateral("Hello Lateral");
+    helloWorldMsg.testLongitudinal("Hello Longitudinal");
+    helloWorldMsg.testSensation("Hello Sensation");
+    helloWorldMsg.testSafety("Hello Safety");
+    return helloWorldMsg;
+}
+
+
+
 
 int32_t main(int32_t argc, char **argv) {
     int32_t retCode{1};
     auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
-    if ( (0 == commandlineArguments.count("cid")) ) {
+    if (0 == commandlineArguments.count("cid") || 0 == commandlineArguments.count("freq")) {
         std::cerr << argv[0] << " translates messages from CAN to ODVD messages and vice versa." << std::endl;
         std::cerr << "Usage:   " << argv[0] << " --cid=<OD4 session> [--id=ID] --can=<name of the CAN device> [--verbose]" << std::endl;
         std::cerr << "         --cid:    CID of the OD4Session to send and receive messages" << std::endl;
@@ -56,10 +76,33 @@ int32_t main(int32_t argc, char **argv) {
         const std::string CANDEVICE{commandlineArguments["can"]};
         const uint32_t ID{(commandlineArguments["id"].size() != 0) ? static_cast<uint32_t>(std::stoi(commandlineArguments["id"])) : 0};
         const bool VERBOSE{commandlineArguments.count("verbose") != 0};
+        float const FREQ = std::stof(commandlineArguments["freq"]);
+        double const DT = 1.0 / FREQ;
 
 
         // Interface to a running OpenDaVINCI session; here, you can send and receive messages.
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
+
+        //Sending test messages to microservices 2020
+        TestClass testClass;
+
+        auto atFrequency {[&od4, &VERBOSE, &DT, &testClass]() -> bool {
+                cluon::data::TimeStamp ts;
+                opendlv::proxy::TestMessageRequest helloWorldMessage = testClass.step(DT); 
+                od4.send(helloWorldMessage,ts,1905);
+                if (VERBOSE) {
+                    std::cout << "Lateral Message = " << helloWorldMessage.testLateral()<<std::endl;
+                    std::cout << "Longitudinal Message = " << helloWorldMessage.testLongitudinal()<<std::endl;
+                    std::cout << "Sensation Message = " << helloWorldMessage.testSensation()<<std::endl;
+                    std::cout << "Safety Message = " << helloWorldMessage.testSafety()<<std::endl;
+                    std::cout << "--------------------------------------------------------------" <<std::endl;
+                    std::cout << "--------------------------------------------------------------" <<std::endl;
+                }
+                return true;                
+        }};      
+        od4.timeTrigger(FREQ, atFrequency);
+        std::thread frequencyThread(atFrequency);
+
         int brakeState = 0;//get the brake pressure to determin braking.
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.
         auto decode = [&od4, VERBOSE, ID,&brakeState](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
@@ -188,20 +231,14 @@ int32_t main(int32_t argc, char **argv) {
                 }
             }   
         };
-
+        //testFunction();
 #ifdef __linux__
         struct sockaddr_can address;
 #endif
         int socketCAN;
 
         std::cerr << "[opendlv-device-cangw-lynx] Opening " << CANDEVICE << "... ";
-                    cluon::data::TimeStamp ts;
-                    opendlv::proxy::TestMessageRequest helloWorldMsg;
-                    helloWorldMsg.testMessage("Hello Guys");
-                    od4.send(helloWorldMsg,ts,1905);
-                    if (VERBOSE) {
-                        std::cout << "Test Message = " << helloWorldMsg.testMessage()<<std::endl;
-                    }
+
 
 
 #ifdef __linux__
@@ -304,7 +341,7 @@ int32_t main(int32_t argc, char **argv) {
             }
         };
         od4.dataTrigger(opendlv::proxy::PressureReading::ID(), onPressureReading);
-
+        
 
         // Set the Autonomus sensors sending the messages to via CAN to Datalogger with a certain frequency.
         int AS2DLFREQ = 33; //sest the update to 33 frame
