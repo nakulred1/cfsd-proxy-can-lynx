@@ -44,9 +44,17 @@ Then run the microservice:
 ```
 source running.sh
 ```
+In another terminal window run the cluon livefeed:
+
+```
+source livefeed.sh
+```
+
+Now you can see the messages being sent in cluon livefeed every 2 seconds.
 
 
-Optional steps
+
+Optional things you can try
 
 generate the dbc map file:
 
