@@ -24,7 +24,7 @@ Instructions to run the microservice
 First install can utilities
 
 ```
-apt-get install can utils
+apt-get install can-utils
 ```
 
 Then setup a virtual can 

@@ -34,8 +34,8 @@ build-amd64:
   stage: build
   script:
     - docker build .
-  #only:
-  #  - master
+  only:
+    - master
 release:
   tags:
       - docker-build
