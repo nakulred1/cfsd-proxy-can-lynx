@@ -17,12 +17,36 @@ lynx19gw.dbc.map is the mapping setting file for the microservice knowing how to
 
 Messege senderStamps See: CAN Mapping.md
 
-run the microservice:
+
+
+Instructions to run the microservice
+
+First install can utilities
 
 ```
-docker run --rm -ti --net=host --privileged cfsd-proxy-cangw:v0.0.0 --cid=111 --can=can0 --verbose
+apt-get install can utils
 ```
 
+Then setup a virtual can 
+
+```
+source vcan_setup.sh
+```
+
+Now you can build the microservice:
+
+```
+source building.sh
+```
+
+Then run the microservice:
+
+```
+source running.sh
+```
+
+
+Optional steps
 
 generate the dbc map file:
 
@@ -36,15 +60,8 @@ get the code Snippet:
 docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateMappingCodeSnippet.awk lynx19gw.dbc.map
 ```
 
-Setting the CAN:
-
-```
-sudo ip link set can0 up type can bitrate 500000
-sudo ifconfig can0 up
-```
-
 watch the CAN message:
 
 ```
-candump can0
+candump vcan0
 ```
