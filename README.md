@@ -39,7 +39,7 @@ Now you can see the files that are in test_messages branch in remote
 Then install can utilities
 
 ```
-apt-get install can-utils
+sudo apt-get install can-utils
 ```
 
 Then setup a virtual can 
