@@ -21,7 +21,22 @@ Messege senderStamps See: CAN Mapping.md
 
 Instructions to run the microservice
 
-First install can utilities
+First clone the git repository with
+
+```
+git clone https://git.chalmers.se/cfs/driverless20/cfsd-proxy-can-lynx.git
+```
+
+Then go to the directory and checkout to branch test_messages
+
+```
+cd cfsd-proxy-can-lynx/
+git checkout test_messages
+```
+
+Now you can see the files that are in test_messages branch in remote
+
+Then install can utilities
 
 ```
 apt-get install can-utils
