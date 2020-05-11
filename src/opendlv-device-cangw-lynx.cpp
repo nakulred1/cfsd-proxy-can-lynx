@@ -83,10 +83,10 @@ int32_t main(int32_t argc, char **argv) {
         // Interface to a running OpenDaVINCI session; here, you can send and receive messages.
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
 
-        //Sending test messages to microservices 2020
+        //Sending test messages to microservices CFSD20
         TestClass testClass;
 
-        auto atFrequency {[&od4, &VERBOSE, &DT, &testClass]() -> bool {
+         auto atFrequency {[&od4, &VERBOSE, &DT, &testClass]() -> bool {
                 cluon::data::TimeStamp ts;
                 opendlv::proxy::TestMessageRequest helloWorldMessage = testClass.step(DT); 
                 od4.send(helloWorldMessage,ts,1905);
@@ -101,7 +101,23 @@ int32_t main(int32_t argc, char **argv) {
                 return true;                
         }};      
         od4.timeTrigger(FREQ, atFrequency);
-        std::thread frequencyThread(atFrequency);
+        std::thread frequencyThread(atFrequency); 
+
+        //Recieving test messages from microservices CFSD20
+/*         auto onTestMessageRequest{[&VERBOSE](cluon::data::Envelope &&envelope){
+            uint32_t const senderStamp = envelope.senderStamp();
+            auto testMessageRequest = cluon::extractMessage<opendlv::proxy::TestMessageRequest>(std::move(envelope));
+            if (VERBOSE) {
+                std::cout << "Lateral Recieved = " << testMessageRequest.testLateral()<<std::endl;
+                std::cout << "Longitudinal Recieved = " << testMessageRequest.testLongitudinal()<<std::endl;
+                std::cout << "Sensation Recieved = " << testMessageRequest.testSensation()<<std::endl;
+                std::cout << "Safety Recieved = " << testMessageRequest.testSafety()<<std::endl;
+                std::cout << "--------------------------------------------------------------" <<std::endl;
+                std::cout << "--------------------------------------------------------------" <<std::endl;
+            }
+
+        }};
+        od4.dataTrigger(opendlv::proxy::TestMessageRequest::ID(), onTestMessageRequest); */
 
         int brakeState = 0;//get the brake pressure to determin braking.
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.

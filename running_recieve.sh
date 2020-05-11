@@ -1,0 +1,1 @@
+docker run --rm -ti --net=host --privileged cfsd-proxy-can-lynx-recieve --cid=111 --freq=0.5 --can=vcan0 --verbose

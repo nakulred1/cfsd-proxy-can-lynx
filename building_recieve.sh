@@ -1,0 +1,1 @@
+docker build -f Dockerfile -t cfsd-proxy-can-lynx-recieve .

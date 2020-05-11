@@ -19,7 +19,7 @@ Messege senderStamps See: CAN Mapping.md
 
 
 
-Instructions to run the microservice
+**Instructions to run the microservice**
 
 First clone the git repository with
 
@@ -69,7 +69,7 @@ Now you can see the messages being sent in cluon livefeed every 2 seconds.
 
 
 
-Optional things you can try
+**Optional things you can try**
 
 generate the dbc map file:
 
@@ -88,3 +88,5 @@ watch the CAN message:
 ```
 candump vcan0
 ```
+
+*If you were able to do all the above steps, Great Work!! :grinning:*
