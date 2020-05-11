@@ -84,7 +84,7 @@ int32_t main(int32_t argc, char **argv) {
         cluon::OD4Session od4{static_cast<uint16_t>(std::stoi(commandlineArguments["cid"]))};
 
         //Sending test messages to microservices CFSD20
-        TestClass testClass;
+/*         TestClass testClass;
 
          auto atFrequency {[&od4, &VERBOSE, &DT, &testClass]() -> bool {
                 cluon::data::TimeStamp ts;
@@ -101,10 +101,10 @@ int32_t main(int32_t argc, char **argv) {
                 return true;                
         }};      
         od4.timeTrigger(FREQ, atFrequency);
-        std::thread frequencyThread(atFrequency); 
+        std::thread frequencyThread(atFrequency);  */
 
         //Recieving test messages from microservices CFSD20
-/*         auto onTestMessageRequest{[&VERBOSE](cluon::data::Envelope &&envelope){
+        auto onTestMessageRequest{[&VERBOSE](cluon::data::Envelope &&envelope){
             uint32_t const senderStamp = envelope.senderStamp();
             auto testMessageRequest = cluon::extractMessage<opendlv::proxy::TestMessageRequest>(std::move(envelope));
             if (VERBOSE) {
@@ -117,7 +117,7 @@ int32_t main(int32_t argc, char **argv) {
             }
 
         }};
-        od4.dataTrigger(opendlv::proxy::TestMessageRequest::ID(), onTestMessageRequest); */
+        od4.dataTrigger(opendlv::proxy::TestMessageRequest::ID(), onTestMessageRequest);
 
         int brakeState = 0;//get the brake pressure to determin braking.
         // Delegate to convert incoming CAN frames into ODVD messages that are broadcast into the OD4Session.

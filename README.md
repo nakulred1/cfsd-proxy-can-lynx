@@ -31,10 +31,10 @@ Then go to the directory and checkout to branch test_messages
 
 ```
 cd cfsd-proxy-can-lynx/
-git checkout test_messages
+git checkout test_messages_recieve
 ```
 
-Now you can see the files that are in test_messages branch in remote
+Now you can see the files that are in test_messages_recieve branch in remote
 
 Then install can utilities
 
@@ -51,21 +51,23 @@ source vcan_setup.sh
 Now you can build the microservice:
 
 ```
-source building.sh
+source building_recieve.sh
 ```
 
 Then run the microservice:
 
 ```
+source running_recieve.sh
+```
+In another terminal window:
+
+```
+git checkout test_messages
+source building.sh
 source running.sh
 ```
-In another terminal window run the cluon livefeed:
 
-```
-source livefeed.sh
-```
-
-Now you can see the messages being sent in cluon livefeed every 2 seconds.
+Now you can see messages are recieved in the first terminal.
 
 
 
