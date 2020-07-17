@@ -99,6 +99,14 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
+            else if (LYNX19GW_L3_GD20_ROTATION_B_FRAME_ID == canFrameID) {
+                lynx19gw_l3_gd20_rotation_b_t tmp;
+                if (0 == lynx19gw_l3_gd20_rotation_b_unpack(&tmp, src, len)) {
+                    float myValue = (static_cast<float>(lynx19gw_l3_gd20_rotation_b_rotation_z_decode(tmp.rotation_z)));
+                    std::cout << "Value = " << myValue << std::endl;
+                }
+            }
+
         };
 
 #ifdef __linux__
