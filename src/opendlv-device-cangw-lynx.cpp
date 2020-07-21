@@ -63,12 +63,12 @@ int32_t main(int32_t argc, char **argv) {
 
         auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
-            if (LYNX19GW_TEST_FRAME_ID == canFrameID) {
-                lynx19gw_test_t tmp;
-                if (0 == lynx19gw_test_unpack(&tmp, src, len)) {
+            if (LYNX19GW_TEST_CAN_MESSAGE_1_FRAME_ID == canFrameID) {
+                lynx19gw_test_can_message_1_t tmp;
+                if (0 == lynx19gw_test_can_message_1_unpack(&tmp, src, len)) {
                     {
                         opendlv::proxy::Test msg;
-                        msg.testMessage(static_cast<int32_t>(lynx19gw_test_test_message_decode(tmp.test_message)));
+                        msg.testCanMessage1(static_cast<int8_t>(lynx19gw_test_can_message_1_test_message_decode(tmp.test_message)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -80,14 +80,12 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
-            else if (LYNX19GW_FRONT_NODE_FRAME_ID == canFrameID) {
-                lynx19gw_front_node_t tmp;
-                    if (0 == lynx19gw_front_node_unpack(&tmp, src, len)) {
+            else if (LYNX19GW_TEST_CAN_MESSAGE_2_FRAME_ID == canFrameID) {
+                lynx19gw_test_can_message_2_t tmp;
+                    if (0 == lynx19gw_test_can_message_2_unpack(&tmp, src, len)) {
                     {
-                        std::cout << tmp.apps_value << std::endl;
-                        std::cout << lynx19gw_test_test_message_decode(tmp.apps_value) << std::endl;
-                        opendlv::proxy::Sensors msg;
-                        msg.appsValue(static_cast<float>(lynx19gw_test_test_message_decode(tmp.apps_value)));
+                        opendlv::proxy::Test msg;
+                        msg.testCanMessage2(static_cast<int8_t>(lynx19gw_test_can_message_2_test_message_decode(tmp.test_message)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -99,6 +97,31 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
+            else if (LYNX19GW_TEST_CAN_MESSAGE_3_FRAME_ID == canFrameID) {
+                lynx19gw_test_can_message_3_t tmp;
+                    if (0 == lynx19gw_test_can_message_3_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::proxy::Test msg;
+                        msg.testCanMessage3(static_cast<int8_t>(lynx19gw_test_can_message_3_test_message_decode(tmp.test_message)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        }
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }            
+            else if (LYNX19GW_L3_GD20_ROTATION_B_FRAME_ID == canFrameID) {
+                lynx19gw_l3_gd20_rotation_b_t tmp;
+                if (0 == lynx19gw_l3_gd20_rotation_b_unpack(&tmp, src, len)) {
+                    float myValue = (static_cast<float>(lynx19gw_l3_gd20_rotation_b_rotation_z_decode(tmp.rotation_z)));
+                    std::cout << "Value = " << myValue << std::endl;
+                }
+            }
+
         };
 
 #ifdef __linux__

@@ -32,16 +32,44 @@ BS_:
 
 BU_: 
 
-BO_ 200 Test: 1 Vector__XXX
- SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
-
 BO_ 16 MOTOR_CONTROL_MESSAGE: 7 Vector__XXX
  SG_ Pwm_Enabled : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Torque_Setpoint : 8|16@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Speed_Setpoint : 24|16@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Max_Power_Setpoint : 40|16@1+ (1,0) [0|0] "" Vector__XXX
 
-BO_ 17 Front_Node: 4 Vector__XXX
- SG_ Apps_value : 0|32@1+ (1,0) [0|0] "per" Vector__XXX
+BO_ 31 FRONT_NODE_STATUS: 2 Vector__XXX
+ SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
 
-SIG_VALTYPE_ 17 Apps_value : 1;
+BO_ 32 REAR_NODE_STATUS: 2 Vector__XXX
+ SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 33 AMS_STATUS: 2 Vector__XXX
+ SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 50 APPS: 5 Vector__XXX
+ SG_ Throttle_Percentage : 0|32@1+ (1,0) [0|0] "per" Vector__XXX
+ SG_ Apps_Fault : 32|1@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 200 TEST_CAN_MESSAGE_1: 1 Vector__XXX
+ SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 201 TEST_CAN_MESSAGE_2: 1 Vector__XXX
+ SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 202 TEST_CAN_MESSAGE_3: 1 Vector__XXX
+ SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1553 L3GD20_Rotation_B: 4 Vector__XXX
+ SG_ Rotation_Z : 0|32@1+ (1,0) [-4000|4000] "deg/s" Vector__XXX
+
+
+
+
+
+
+SIG_VALTYPE_ 50 Throttle_Percentage : 1;
+SIG_VALTYPE_ 1553 Rotation_Z : 1;

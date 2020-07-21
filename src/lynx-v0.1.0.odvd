@@ -17,9 +17,7 @@
  */
 
 message opendlv.proxy.Test [id = 1001] {
-  int testMessage [id = 1];
-}
-
-message opendlv.proxy.Sensors [id = 1002] {
-  float appsValue [id = 1];
+  int testCanMessage1 [id = 1];
+  int testCanMessage2 [id = 2];
+  int testCanMessage3 [id = 3]; 
 }
