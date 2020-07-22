@@ -27,58 +27,27 @@ message opendlv.cfsdProxyCANReading.Apps [id = 1002] {
   int appsFault [id = 2];
 }
 
-message opendlv.cfsdProxyCANReading.AsStatus [id = 2001] {
-    int accSoC [id = 1];
-    int brakeRear [id = 2];
-    int brakeFront [id = 3];
-    int dlStatus [id = 4];
-    int asMission [id = 5];
+message opendlv.proxy.SwitchStateReading [id = 2000] {
+  float vehicleSpeed [id = 1];
+  bool asmsOn [id = 2];
+  bool saAvailable [id = 3];
+  bool resState [id = 4];
+  bool resStopSignal [id = 5];
+  bool resGoSignal [id = 6];
+  bool resInitialized [id = 7];
+} 
+
+message opendlv.proxy.SwitchStateRequest [id = 2001] {
+  bool finishSignal [id = 1];
+  bool ebsState [id = 2];
+  bool ebsArmed [id = 3];
+  bool ebsActivated [id = 4];
+  bool ebsSpeakerOn [id = 5];
+  bool waitToDrive [id = 6];
+  bool brakesReleased [id = 7];
+  bool tsOn [id = 8];
+  bool asMission [id = 9];
+  bool missionSelect [id = 10];
 }
 
-message opendlv.cfsdProxyCANReading.WheelSpeedFront [id = 2002]{
-    float wheelFrontRight [id = 1];
-    float wheelFrontLeft [id = 2];
-}
 
-message opendlv.cfsdProxyCANReading.WheelSpeedRare [id = 2003]{
-    float wheelRareRight [id = 1];
-    float wheelRareLeft [id = 2];
-}
-
-message opendlv.cfsdProxyCANReading.PedalRatio [id = 2004]{
-    int throttle [id = 1];
-    int brake [id = 2];
-}
-
-message opendlv.cfsdProxyCANWriting.ASTorque [id = 2005]{
-    int torqueLeft [id = 1];
-    int torqueRight [id = 2];
-}
-
-message opendlv.cfsdProxyCANWriting.ASStatus [id = 2006]{
-    int asRedyToDrive [id = 1];
-    int steeringPosition [id = 2];
-    int rackPosition [id = 3];
-    int pressureService [id = 4];
-    int pressureRegulator [id = 5];
-    int pressureEBSLine [id = 6];
-    int pressureEBSAct [id = 7];
-    int asState [id = 8];
-}
-
-message opendlv.cfsdProxyCANWriting.NMT [id = 2007]{
-    uint8 nodeState [id = 1];
-    uint8 nodeId [id = 2];
-}
-
-message opendlv.cfsdProxyCANReading.RESStatus [id = 2008]{
-    int resStatus [id = 1];
-    int resEStop [id = 2];
-    int resQuality [id = 3];
-    int resButtons [id = 4]; 
-}
-
-message opendlv.cfsdProxyCANReading.Knobs [id = 2009]{
-    int knobL [id = 1];
-    int knobR [id = 2];
-}

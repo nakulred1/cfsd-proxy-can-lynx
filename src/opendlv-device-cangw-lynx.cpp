@@ -131,13 +131,44 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
-            else if (LYNX19GW_APPS_FRAME_ID == canFrameID) {
-                lynx19gw_apps_t tmp;
-                    if (0 == lynx19gw_apps_unpack(&tmp, src, len)) {
+            else if (LYNX19GW_SWITCH_STATE_READING_FRAME_ID == canFrameID) {
+                lynx19gw_switch_state_reading_t tmp;
+                    if (0 == lynx19gw_switch_state_reading_unpack(&tmp, src, len)) {
                     {
-                        opendlv::cfsdProxyCANReading::Apps msg;
-                        msg.throttlePercentage(static_cast<float>(lynx19gw_apps_throttle_percentage_decode(tmp.throttle_percentage)));
-                        msg.appsFault(static_cast<uint8_t>(lynx19gw_apps_apps_fault_decode(tmp.apps_fault)));
+                        opendlv::proxy::SwitchStateReading msg;
+                        msg.vehicleSpeed(static_cast<float>(lynx19gw_switch_state_reading_vehicle_speed_decode(tmp.vehicle_speed)));
+                        msg.asmsOn(static_cast<bool>(lynx19gw_switch_state_reading_asms_on_decode(tmp.asms_on)));
+                        msg.saAvailable(static_cast<bool>(lynx19gw_switch_state_reading_sa_available_decode(tmp.sa_available)));
+                        msg.resState(static_cast<bool>(lynx19gw_switch_state_reading_res_state_decode(tmp.res_state)));
+                        msg.resStopSignal(static_cast<bool>(lynx19gw_switch_state_reading_res_stop_signal_decode(tmp.res_stop_signal)));
+                        msg.resGoSignal(static_cast<bool>(lynx19gw_switch_state_reading_res_go_signal_decode(tmp.res_go_signal)));
+                        msg.resInitialized(static_cast<bool>(lynx19gw_switch_state_reading_res_initialized_decode(tmp.res_initialized)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_SWITCH_STATE_REQUEST_FRAME_ID == canFrameID) {
+                lynx19gw_switch_state_request_t tmp;
+                    if (0 == lynx19gw_switch_state_request_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::proxy::SwitchStateRequest msg;
+                        msg.finishSignal(static_cast<bool>(lynx19gw_switch_state_request_finish_signal_decode(tmp.finish_signal)));
+                        msg.ebsState(static_cast<bool>(lynx19gw_switch_state_request_ebs_state_decode(tmp.ebs_state)));
+                        msg.ebsArmed(static_cast<bool>(lynx19gw_switch_state_request_ebs_armed_decode(tmp.ebs_armed)));
+                        msg.ebsActivated(static_cast<bool>(lynx19gw_switch_state_request_ebs_activated_decode(tmp.ebs_activated)));
+                        msg.ebsSpeakerOn(static_cast<bool>(lynx19gw_switch_state_request_ebs_speaker_on_decode(tmp.ebs_speaker_on)));
+                        msg.waitToDrive(static_cast<bool>(lynx19gw_switch_state_request_ebs_wait_to_drive_decode(tmp.ebs_wait_to_drive)));
+                        msg.brakesReleased(static_cast<bool>(lynx19gw_switch_state_request_brakes_released_decode(tmp.brakes_released)));
+                        msg.tsOn(static_cast<bool>(lynx19gw_switch_state_request_ts_on_decode(tmp.ts_on)));
+                        msg.asMission(static_cast<bool>(lynx19gw_switch_state_request_as_mission_decode(tmp.as_mission)));
+                        msg.missionSelect(static_cast<bool>(lynx19gw_switch_state_request_mission_select_decode(tmp.mission_select)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},

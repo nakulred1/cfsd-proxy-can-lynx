@@ -65,6 +65,30 @@ BO_ 201 TEST_CAN_MESSAGE_2: 1 Vector__XXX
 BO_ 202 TEST_CAN_MESSAGE_3: 1 Vector__XXX
  SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
 
+BO_ 2000 SWITCH_STATE_READING: 5 Vector__XXX
+ SG_ Vehicle_Speed : 0|32@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ASMS_On : 32|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SA_Available : 33|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RES_State : 34|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RES_Stop_Signal : 35|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RES_Go_Signal : 36|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RES_Initialized : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 2001 SWITCH_STATE_REQUEST: 2 Vector__XXX
+ SG_ Finish_Signal : 0|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_State : 2|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Armed : 3|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Activated : 4|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Speaker_On : 5|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Wait_To_Drive : 6|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Brakes_Released : 7|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ TS_On : 8|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ AS_Mission : 9|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Mission_Select : 10|1@1+ (1,0) [0|0] "" Vector__XXX
+
+
+
+
 
 
 
