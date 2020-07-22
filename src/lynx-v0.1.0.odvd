@@ -27,27 +27,47 @@ message opendlv.cfsdProxyCANReading.Apps [id = 1002] {
   int appsFault [id = 2];
 }
 
-message opendlv.proxy.SwitchStateReading [id = 2000] {
-  float vehicleSpeed [id = 1];
-  bool asmsOn [id = 2];
-  bool saAvailable [id = 3];
-  bool resState [id = 4];
-  bool resStopSignal [id = 5];
-  bool resGoSignal [id = 6];
-  bool resInitialized [id = 7];
+message opendlv.cfsdProxyCANReading.SafetyLayer [id = 2001] {
+  bool asmsOn [id = 1];
+  bool resState [id = 2];
+  bool resStopSignal [id = 3];
+  bool resGoSignal [id = 4];
+  bool resInitialized [id = 5];
+  bool brakesReleased [id = 6];
+  bool tsOn [id = 7];
+  bool waitToDrive [id = 8];
 } 
 
-message opendlv.proxy.SwitchStateRequest [id = 2001] {
-  bool finishSignal [id = 1];
-  bool ebsState [id = 2];
-  bool ebsArmed [id = 3];
-  bool ebsActivated [id = 4];
-  bool ebsSpeakerOn [id = 5];
-  bool waitToDrive [id = 6];
-  bool brakesReleased [id = 7];
-  bool tsOn [id = 8];
-  bool asMission [id = 9];
-  bool missionSelect [id = 10];
+message opendlv.cfsdProxyCANReading.VehicleSpeed [id = 2002] {
+  int wheelFrontRight [id = 1];
+  int wheelFrontLeft [id = 2];
+  int wheelRearRight [id = 3];
+  int wheelRearLeft [id = 4];
+} 
+
+message opendlv.cfsdProxyCANReading.EBS [id = 2003] {
+  bool ebsState [id = 1];
+  bool ebsArmed [id = 2];
+  bool ebsActivated [id = 3];
+  bool ebsSpeakerOn [id = 4];
+}
+
+message opendlv.cfsdProxyCANWriting.ASMission [id = 2004] {
+  bool missionSelected [id = 1];
+  bool asStatus [id = 2];
+}
+
+message opendlv.cfsdProxyCANReading.ASMission [id = 2005] {
+  bool missionSelect [id = 1];
+}
+
+message opendlv.cfsdProxyCANWriting.SafetyLayer [id = 2006] {
+  bool asHeartbeat [id = 1];
+  bool asStateSelect [id = 2];
+}
+
+message opendlv.cfsdProxyCANReading.SteeringEmcl [id = 2007] {
+  bool saHeartbeat [id = 1];
 }
 
 

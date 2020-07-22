@@ -44,7 +44,7 @@ int32_t main(int32_t argc, char **argv) {
     int32_t retCode{1};
     auto commandlineArguments = cluon::getCommandlineArguments(argc, argv);
     if ( (0 == commandlineArguments.count("cid")) ) {
-        std::cerr << argv[0] << " translates messages from CAN to ODVD messages for PEAK CAN GPS." << std::endl;
+        std::cerr << argv[0] << " translates messages from CAN to ODVD messages for CFSD 20 Lynx Car." << std::endl;
         std::cerr << "Usage:   " << argv[0] << " --cid=<OD4 session> [--id=ID] --can=<name of the CAN device> [--verbose]" << std::endl;
         std::cerr << "         --cid:    CID of the OD4Session to send and receive messages" << std::endl;
         std::cerr << "         --id:     ID to use as senderStamp for sending" << std::endl;
@@ -131,18 +131,19 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
-            else if (LYNX19GW_SWITCH_STATE_READING_FRAME_ID == canFrameID) {
-                lynx19gw_switch_state_reading_t tmp;
-                    if (0 == lynx19gw_switch_state_reading_unpack(&tmp, src, len)) {
+            else if (LYNX19GW_SAFETY_LAYER_FRAME_ID == canFrameID) {
+                lynx19gw_safety_layer_t tmp;
+                    if (0 == lynx19gw_safety_layer_unpack(&tmp, src, len)) {
                     {
-                        opendlv::proxy::SwitchStateReading msg;
-                        msg.vehicleSpeed(static_cast<float>(lynx19gw_switch_state_reading_vehicle_speed_decode(tmp.vehicle_speed)));
-                        msg.asmsOn(static_cast<bool>(lynx19gw_switch_state_reading_asms_on_decode(tmp.asms_on)));
-                        msg.saAvailable(static_cast<bool>(lynx19gw_switch_state_reading_sa_available_decode(tmp.sa_available)));
-                        msg.resState(static_cast<bool>(lynx19gw_switch_state_reading_res_state_decode(tmp.res_state)));
-                        msg.resStopSignal(static_cast<bool>(lynx19gw_switch_state_reading_res_stop_signal_decode(tmp.res_stop_signal)));
-                        msg.resGoSignal(static_cast<bool>(lynx19gw_switch_state_reading_res_go_signal_decode(tmp.res_go_signal)));
-                        msg.resInitialized(static_cast<bool>(lynx19gw_switch_state_reading_res_initialized_decode(tmp.res_initialized)));
+                        opendlv::cfsdProxyCANReading::SafetyLayer msg;
+                        msg.asmsOn(0 < std::fabs(lynx19gw_safety_layer_asms_on_decode(tmp.asms_on)));
+                        msg.resState(0 < std::fabs(lynx19gw_safety_layer_res_state_decode(tmp.res_state)));
+                        msg.resStopSignal(0 < std::fabs(lynx19gw_safety_layer_res_stop_signal_decode(tmp.res_stop_signal)));
+                        msg.resGoSignal(0 < std::fabs(lynx19gw_safety_layer_res_go_signal_decode(tmp.res_go_signal)));
+                        msg.resInitialized(0 < std::fabs(lynx19gw_safety_layer_res_initialized_decode(tmp.res_initialized)));
+                        msg.brakesReleased(0 < std::fabs(lynx19gw_safety_layer_brakes_released_decode(tmp.brakes_released)));
+                        msg.tsOn(0 < std::fabs(lynx19gw_safety_layer_ts_on_decode(tmp.ts_on)));
+                        msg.waitToDrive(0 < std::fabs(lynx19gw_safety_layer_wait_to_drive_decode(tmp.wait_to_drive)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -154,21 +155,52 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
-            else if (LYNX19GW_SWITCH_STATE_REQUEST_FRAME_ID == canFrameID) {
-                lynx19gw_switch_state_request_t tmp;
-                    if (0 == lynx19gw_switch_state_request_unpack(&tmp, src, len)) {
+            else if (LYNX19GW_VEHICLE_SPEED_FRAME_ID == canFrameID) {
+                lynx19gw_vehicle_speed_t tmp;
+                    if (0 == lynx19gw_vehicle_speed_unpack(&tmp, src, len)) {
                     {
-                        opendlv::proxy::SwitchStateRequest msg;
-                        msg.finishSignal(static_cast<bool>(lynx19gw_switch_state_request_finish_signal_decode(tmp.finish_signal)));
-                        msg.ebsState(static_cast<bool>(lynx19gw_switch_state_request_ebs_state_decode(tmp.ebs_state)));
-                        msg.ebsArmed(static_cast<bool>(lynx19gw_switch_state_request_ebs_armed_decode(tmp.ebs_armed)));
-                        msg.ebsActivated(static_cast<bool>(lynx19gw_switch_state_request_ebs_activated_decode(tmp.ebs_activated)));
-                        msg.ebsSpeakerOn(static_cast<bool>(lynx19gw_switch_state_request_ebs_speaker_on_decode(tmp.ebs_speaker_on)));
-                        msg.waitToDrive(static_cast<bool>(lynx19gw_switch_state_request_ebs_wait_to_drive_decode(tmp.ebs_wait_to_drive)));
-                        msg.brakesReleased(static_cast<bool>(lynx19gw_switch_state_request_brakes_released_decode(tmp.brakes_released)));
-                        msg.tsOn(static_cast<bool>(lynx19gw_switch_state_request_ts_on_decode(tmp.ts_on)));
-                        msg.asMission(static_cast<bool>(lynx19gw_switch_state_request_as_mission_decode(tmp.as_mission)));
-                        msg.missionSelect(static_cast<bool>(lynx19gw_switch_state_request_mission_select_decode(tmp.mission_select)));
+                        opendlv::cfsdProxyCANReading::VehicleSpeed msg;
+                        msg.wheelFrontRight(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_front_right_decode(tmp.wheel_front_right)));
+                        msg.wheelFrontLeft(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_front_left_decode(tmp.wheel_front_left)));
+                        msg.wheelRearRight(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_rear_right_decode(tmp.wheel_rear_right)));
+                        msg.wheelRearLeft(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_rear_left_decode(tmp.wheel_rear_left)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_EBS_FRAME_ID == canFrameID) {
+                lynx19gw_ebs_t tmp;
+                    if (0 == lynx19gw_ebs_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::EBS msg;
+                        msg.ebsState(0 < std::fabs(lynx19gw_ebs_ebs_state_decode(tmp.ebs_state)));
+                        msg.ebsArmed(0 < std::fabs(lynx19gw_ebs_ebs_armed_decode(tmp.ebs_armed)));
+                        msg.ebsActivated(0 < std::fabs(lynx19gw_ebs_ebs_activated_decode(tmp.ebs_activated)));
+                        msg.ebsSpeakerOn(0 < std::fabs(lynx19gw_ebs_ebs_speaker_on_decode(tmp.ebs_speaker_on)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_AS_MISSION_FRAME_ID == canFrameID) {
+                lynx19gw_as_mission_t tmp;
+                    if (0 == lynx19gw_as_mission_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::ASMission msg;
+                        msg.missionSelect(0 < std::fabs(lynx19gw_as_mission_mission_select_decode(tmp.mission_select)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
