@@ -154,7 +154,7 @@ int32_t main(int32_t argc, char **argv) {
                     if (0 == lynx19gw_front_node_status_unpack(&tmp, src, len)) {
                     {
                         opendlv::cfsdProxyCANReading::FrontNodeStatus msg;
-                        msg.counter(static_cast<float>(lynx19gw_apps_throttle_percentage_decode(tmp.counter)));
+                        msg.counter(static_cast<uint8_t>(lynx19gw_apps_throttle_percentage_decode(tmp.counter)));
                         msg.readyToDrive(static_cast<uint8_t>(lynx19gw_apps_apps_fault_decode(tmp.ready_to_drive)));
                         if (VERBOSE) {
                             std::stringstream sstr;
