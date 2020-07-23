@@ -63,6 +63,24 @@ int32_t main(int32_t argc, char **argv) {
 
         auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
+            const int16_t senderStampAsmsOn = 5005;
+            const int16_t senderStampSaAvailable = 5016;
+            const int16_t senderStampResState = 5003;
+            const int16_t senderStampResStopSignal = 5014;
+            const int16_t senderStampResGoSignal = 5013;
+            const int16_t senderStampResInitialized = 5018;
+            const int16_t senderStampFinishSignal = 5015;
+            const int16_t senderStampEbsState = 5001;
+            const int16_t senderStampEbsArmed = 5008;
+            const int16_t senderStampEbsActivated = 5009;
+            const int16_t senderStampEbsSpeakerOn = 5010;
+            const int16_t senderStampWaitToDrive = 5011;
+            const int16_t senderStampBrakesReleased = 5007;
+            const int16_t senderStampTsOn = 5006;
+            const int16_t senderStampAsMission = 5004;
+            const int16_t senderStampVehicleSpeed = 5017;
+
+
             if (LYNX19GW_TEST_CAN_MESSAGE_1_FRAME_ID == canFrameID) {
                 lynx19gw_test_can_message_1_t tmp;
                 if (0 == lynx19gw_test_can_message_1_unpack(&tmp, src, len)) {
@@ -150,8 +168,39 @@ int32_t main(int32_t argc, char **argv) {
                                        [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
                                        []() {});
                             std::cout << sstr.str() << std::endl;
-                        } 
-                        od4.send(msg, ts, ID);
+                        }
+
+                        opendlv::proxy::SwitchStateReading msgAsmsOn;
+                        msgAsmsOn.state(msg.asmsOn());
+                        od4.send(msgAsmsOn, ts, senderStampAsmsOn);
+
+                        opendlv::proxy::SwitchStateReading msgResState;
+                        msgResState.state(msg.resState());
+                        od4.send(msgResState, ts, senderStampResState);
+                        
+                        opendlv::proxy::SwitchStateReading msgResStopSignal;
+                        msgResStopSignal.state(msg.resStopSignal());
+                        od4.send(msgResStopSignal, ts, senderStampResStopSignal);
+
+                        opendlv::proxy::SwitchStateReading msgResGoSignal;
+                        msgResGoSignal.state(msg.resGoSignal());
+                        od4.send(msgResGoSignal, ts, senderStampResGoSignal);
+
+                        opendlv::proxy::SwitchStateReading msgResInitialized;
+                        msgResInitialized.state(msg.resInitialized());
+                        od4.send(msgResInitialized, ts, senderStampResInitialized);
+
+                        opendlv::proxy::SwitchStateRequest msgBrakesReleased;
+                        msgBrakesReleased.state(msg.brakesReleased());
+                        od4.send(msgBrakesReleased, ts, senderStampBrakesReleased);
+
+                        opendlv::proxy::SwitchStateRequest msgTsOn;
+                        msgTsOn.state(msg.tsOn());
+                        od4.send(msgTsOn, ts, senderStampTsOn);
+
+                        opendlv::proxy::SwitchStateRequest msgWaitToDrive;
+                        msgWaitToDrive.state(msg.waitToDrive());
+                        od4.send(msgWaitToDrive, ts, senderStampWaitToDrive);
                     }
                 }
             }
@@ -171,7 +220,9 @@ int32_t main(int32_t argc, char **argv) {
                                        []() {});
                             std::cout << sstr.str() << std::endl;
                         } 
-                        od4.send(msg, ts, ID);
+                        opendlv::proxy::SwitchStateReading msgVehicleSpeed;
+                        msgVehicleSpeed.state(msg.wheelFrontRight());
+                        od4.send(msgVehicleSpeed, ts, senderStampVehicleSpeed);
                     }
                 }
             }
@@ -191,7 +242,21 @@ int32_t main(int32_t argc, char **argv) {
                                        []() {});
                             std::cout << sstr.str() << std::endl;
                         } 
-                        od4.send(msg, ts, ID);
+                        opendlv::proxy::SwitchStateRequest msgEbsState;
+                        msgEbsState.state(msg.ebsState());
+                        od4.send(msgEbsState, ts, senderStampEbsState);
+
+                        opendlv::proxy::SwitchStateRequest msgEbsArmed;
+                        msgEbsArmed.state(msg.ebsArmed());
+                        od4.send(msgEbsArmed, ts, senderStampEbsArmed);
+
+                        opendlv::proxy::SwitchStateRequest msgEbsActivated;
+                        msgEbsActivated.state(msg.ebsActivated());
+                        od4.send(msgEbsActivated, ts, senderStampEbsActivated);
+
+                        opendlv::proxy::SwitchStateRequest msgEbsSpeakerOn;
+                        msgEbsSpeakerOn.state(msg.ebsSpeakerOn());
+                        od4.send(msgEbsSpeakerOn, ts, senderStampEbsSpeakerOn);
                     }
                 }
             }
@@ -208,7 +273,9 @@ int32_t main(int32_t argc, char **argv) {
                                        []() {});
                             std::cout << sstr.str() << std::endl;
                         } 
-                        od4.send(msg, ts, ID);
+                        opendlv::proxy::SwitchStateRequest msgMissionSelect;
+                        msgMissionSelect.state(msg.missionSelect());
+                        od4.send(msgMissionSelect, ts, senderStampAsMission);
                     }
                 }
             }

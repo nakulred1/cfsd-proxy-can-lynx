@@ -2,7 +2,8 @@ version: "2.3"
 
 services:
   proxy-can-lynx:
-    image: registry.git.chalmers.se/cfs/driverless20/cfsd-proxy-can-lynx:latest
+    container_name: proxy-can-lynx
+    image: cfsd-proxy-can-lynx:latest
     restart: on-failure
     network_mode: host
     command: "--cid=111 --freq=0.5 --can=vcan0 --verbose" 
