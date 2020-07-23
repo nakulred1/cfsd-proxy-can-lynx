@@ -149,6 +149,24 @@ int32_t main(int32_t argc, char **argv) {
                     }
                 }
             }
+            else if (LYNX19GW_FRONT_NODE_STATUS_FRAME_ID == canFrameID) {
+                lynx19gw_front_node_status_t tmp;
+                    if (0 == lynx19gw_front_node_status_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::FrontNodeStatus msg;
+                        msg.counter(static_cast<float>(lynx19gw_apps_throttle_percentage_decode(tmp.counter)));
+                        msg.readyToDrive(static_cast<uint8_t>(lynx19gw_apps_apps_fault_decode(tmp.ready_to_drive)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
             else if (LYNX19GW_SAFETY_LAYER_FRAME_ID == canFrameID) {
                 lynx19gw_safety_layer_t tmp;
                     if (0 == lynx19gw_safety_layer_unpack(&tmp, src, len)) {
