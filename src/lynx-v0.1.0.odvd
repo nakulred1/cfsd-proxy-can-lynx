@@ -53,12 +53,12 @@ message opendlv.cfsdProxyCANReading.EBS [id = 2003] {
 }
 
 message opendlv.cfsdProxyCANWriting.ASMission [id = 2004] {
-  bool missionSelected [id = 1];
-  bool asStatus [id = 2];
+  int missionSelected [id = 1];
+  int missionStatus [id = 2];
 }
 
 message opendlv.cfsdProxyCANReading.ASMission [id = 2005] {
-  bool missionSelect [id = 1];
+  int missionSelect [id = 1];
 }
 
 message opendlv.cfsdProxyCANWriting.SafetyLayer [id = 2006] {

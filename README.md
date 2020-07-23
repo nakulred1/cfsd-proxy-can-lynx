@@ -27,13 +27,13 @@ docker run --rm -ti --net=host --privileged cfsd-proxy-cangw:v0.0.0 --cid=111 --
 generate the dbc map file:
 
 ```
-docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateHeaderOnly.sh lynx19gw.dbc lynx.odvd
+docker run --rm -ti -v $PWD/src/:/in -w /in chalmersrevere/dbc2odvd-amd64:v0.0.6 generateHeaderOnly.sh lynx19gw.dbc lynx-v0.1.0.odvd
 ```
 
 get the code Snippet:
 
 ```
-docker run --rm -ti -v $PWD/src/:/in -w /in dbc2odvd:v0.0.0 generateMappingCodeSnippet.awk lynx19gw.dbc.map
+docker run --rm -ti -v $PWD/src/:/in -w /in chalmersrevere/dbc2odvd-amd64:v0.0.6 generateMappingCodeSnippet.awk lynx19gw.dbc.map
 ```
 
 Setting the CAN:

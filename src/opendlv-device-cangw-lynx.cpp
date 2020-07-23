@@ -265,7 +265,7 @@ int32_t main(int32_t argc, char **argv) {
                     if (0 == lynx19gw_as_mission_unpack(&tmp, src, len)) {
                     {
                         opendlv::cfsdProxyCANReading::ASMission msg;
-                        msg.missionSelect(0 < std::fabs(lynx19gw_as_mission_mission_select_decode(tmp.mission_select)));
+                        msg.missionSelect(static_cast<int8_t>(lynx19gw_as_mission_mission_select_decode(tmp.mission_select)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
