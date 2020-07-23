@@ -81,11 +81,11 @@ BO_ 2002 VEHICLE_SPEED: 8 Vector__XXX
  SG_ WHEEL_REAR_RIGHT : 32|16@1+ (1,0) [0|0] "" Vector__XXX
  SG_ WHEEL_REAR_LEFT : 48|16@1+ (1,0) [0|0] "" Vector__XXX
 
-BO_ 2003 EBS: 1 Vector__XXX
- SG_ EBS_State : 0|1@1+ (1,0) [0|0] "" Vector__XXX
- SG_ EBS_Armed : 1|1@1+ (1,0) [0|0] "" Vector__XXX
- SG_ EBS_Activated : 2|1@1+ (1,0) [0|0] "" Vector__XXX
- SG_ EBS_Speaker_On : 3|1@1+ (1,0) [0|0] "" Vector__XXX
+BO_ 2003 EBS: 2 Vector__XXX
+ SG_ EBS_State : 0|8@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Armed : 8|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Activated : 9|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ EBS_Speaker_On : 10|1@1+ (1,0) [0|0] "" Vector__XXX
  
 BO_ 2005 AS_MISSION: 1 Vector__XXX 
  SG_ Mission_Select : 0|8@1+ (1,0) [0|0] "" Vector__XXX

@@ -70,7 +70,7 @@ int32_t main(int32_t argc, char **argv) {
             const int16_t senderStampResGoSignal = 5013;
             const int16_t senderStampResInitialized = 5018;
             const int16_t senderStampFinishSignal = 5015;
-            const int16_t senderStampEbsState = 5001;
+            const int16_t senderStampEbsState = 5002;
             const int16_t senderStampEbsArmed = 5008;
             const int16_t senderStampEbsActivated = 5009;
             const int16_t senderStampEbsSpeakerOn = 5010;
@@ -231,7 +231,7 @@ int32_t main(int32_t argc, char **argv) {
                     if (0 == lynx19gw_ebs_unpack(&tmp, src, len)) {
                     {
                         opendlv::cfsdProxyCANReading::EBS msg;
-                        msg.ebsState(0 < std::fabs(lynx19gw_ebs_ebs_state_decode(tmp.ebs_state)));
+                        msg.ebsState(static_cast<int8_t>(lynx19gw_ebs_ebs_state_decode(tmp.ebs_state)));
                         msg.ebsArmed(0 < std::fabs(lynx19gw_ebs_ebs_armed_decode(tmp.ebs_armed)));
                         msg.ebsActivated(0 < std::fabs(lynx19gw_ebs_ebs_activated_decode(tmp.ebs_activated)));
                         msg.ebsSpeakerOn(0 < std::fabs(lynx19gw_ebs_ebs_speaker_on_decode(tmp.ebs_speaker_on)));
