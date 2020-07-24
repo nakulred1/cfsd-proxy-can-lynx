@@ -6,6 +6,8 @@ lynx19gw_front_node_status_t.counter:
 lynx19gw_front_node_status_t.ready_to_drive:
 lynx19gw_rear_node_status_t.counter:
 lynx19gw_rear_node_status_t.ready_to_drive:
+lynx19gw_autonomous_node_status_t.counter:
+lynx19gw_autonomous_node_status_t.ready_to_drive:
 lynx19gw_ams_status_t.counter:
 lynx19gw_ams_status_t.ready_to_drive:
 lynx19gw_apps_t.throttle_percentage:
