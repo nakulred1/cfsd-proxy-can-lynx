@@ -21,6 +21,7 @@ lynx19gw_safety_layer_t.res_initialized:
 lynx19gw_safety_layer_t.brakes_released:
 lynx19gw_safety_layer_t.ts_on:
 lynx19gw_safety_layer_t.wait_to_drive:
+lynx19gw_safety_layer_t.finished_signal:
 lynx19gw_vehicle_speed_t.wheel_front_right:
 lynx19gw_vehicle_speed_t.wheel_front_left:
 lynx19gw_vehicle_speed_t.wheel_rear_right:
