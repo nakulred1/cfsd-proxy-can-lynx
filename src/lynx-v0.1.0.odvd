@@ -27,6 +27,11 @@ message opendlv.cfsdProxyCANReading.Apps [id = 1002] {
   int appsFault [id = 2];
 }
 
+message opendlv.cfsdProxyCANReading.NodeStatus [id = 1003] {
+  int counter [id = 1];
+  int readyToDrive [id = 2];
+}
+
 message opendlv.cfsdProxyCANReading.SafetyLayer [id = 2001] {
   bool asmsOn [id = 1];
   bool resState [id = 2];

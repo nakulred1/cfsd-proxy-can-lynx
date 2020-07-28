@@ -48,7 +48,11 @@ BO_ 32 REAR_NODE_STATUS: 2 Vector__XXX
  SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
  SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
 
-BO_ 33 AMS_STATUS: 2 Vector__XXX
+BO_ 33 AUTONOMOUS_NODE_STATUS: 2 Vector__XXX
+ SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 34 AMS_STATUS: 2 Vector__XXX
  SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
  SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
 
