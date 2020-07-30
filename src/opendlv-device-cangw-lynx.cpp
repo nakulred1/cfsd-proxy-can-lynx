@@ -63,6 +63,7 @@ int32_t main(int32_t argc, char **argv) {
 
         auto decode = [&od4, VERBOSE, ID](cluon::data::TimeStamp ts, uint16_t canFrameID, uint8_t *src, uint8_t len) {
             if ( (nullptr == src) || (0 == len) ) return;
+            
             const int16_t senderStampAsmsOn = 5005;
             const int16_t senderStampSaAvailable = 5016;
             const int16_t senderStampResState = 5003;
@@ -418,6 +419,7 @@ int32_t main(int32_t argc, char **argv) {
                         msg.brakesReleased(0 < std::fabs(lynx19gw_safety_layer_brakes_released_decode(tmp.brakes_released)));
                         msg.tsOn(0 < std::fabs(lynx19gw_safety_layer_ts_on_decode(tmp.ts_on)));
                         msg.waitToDrive(0 < std::fabs(lynx19gw_safety_layer_wait_to_drive_decode(tmp.wait_to_drive)));
+                        msg.finishedSignal(0 < std::fabs(lynx19gw_safety_layer_finished_signal_decode(tmp.finished_signal)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -457,6 +459,10 @@ int32_t main(int32_t argc, char **argv) {
                         opendlv::proxy::SwitchStateRequest msgWaitToDrive;
                         msgWaitToDrive.state(msg.waitToDrive());
                         od4.send(msgWaitToDrive, ts, senderStampWaitToDrive);
+
+                        opendlv::proxy::SwitchStateRequest msgFinishedSignal;
+                        msgFinishedSignal.state(msg.finishedSignal());
+                        od4.send(msgFinishedSignal, ts, senderStampFinishSignal);
                     }
                 }
             }

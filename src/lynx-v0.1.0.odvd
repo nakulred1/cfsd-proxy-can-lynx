@@ -52,6 +52,7 @@ message opendlv.cfsdProxyCANReading.SafetyLayer [id = 2001] {
   bool brakesReleased [id = 6];
   bool tsOn [id = 7];
   bool waitToDrive [id = 8];
+  bool finishedSignal [id = 9];
 } 
 
 message opendlv.cfsdProxyCANReading.VehicleSpeed [id = 2002] {
