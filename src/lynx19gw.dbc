@@ -56,9 +56,44 @@ BO_ 34 AMS_STATUS: 2 Vector__XXX
  SG_ Counter : 0|8@1- (1,0) [0|0] "" Vector__XXX
  SG_ Ready_To_Drive : 8|8@1- (1,0) [0|0] "" Vector__XXX
 
-BO_ 50 APPS: 5 Vector__XXX
+BO_ 501 APPS_1: 4 Vector__XXX
  SG_ Throttle_Percentage : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
- SG_ Apps_Fault : 32|1@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 502 APPS_2: 4 Vector__XXX
+ SG_ Throttle_Percentage : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 503 HYDRAULIC_BRAKE_PRESSURE_1: 4 Vector__XXX
+ SG_ Hydraulic_Pressure : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 504 HYDRAULIC_BRAKE_PRESSURE_2: 4 Vector__XXX
+ SG_ Hydraulic_Pressure : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 505 BRAKE_DISK_TEMP_1: 4 Vector__XXX
+ SG_ Brake_Disk_Temp : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 506 BRAKE_DISK_TEMP_2: 4 Vector__XXX
+ SG_ Brake_Disk_Temp : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 507 DAMPER_POSITION_1: 4 Vector__XXX
+ SG_ Damper_Position : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 508 DAMPER_POSITION_2: 4 Vector__XXX
+ SG_ Damper_Position : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 509 PNUEMATIC_PRESSURE_1: 4 Vector__XXX
+ SG_ Pnuematic_Pressure : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 510 PNUEMATIC_PRESSURE_2: 4 Vector__XXX
+ SG_ Pnuematic_Pressure : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 511 PNUEMATIC_PRESSURE_3: 4 Vector__XXX
+ SG_ Pnuematic_Pressure : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 512 STEERING_POSITION_1: 4 Vector__XXX
+ SG_ Steering_Position : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
+
+BO_ 513 STEERING_POSITION_2: 4 Vector__XXX
+ SG_ Steering_Position : 0|32@1+ (1,0) [0.0|100.0] "per" Vector__XXX
 
 BO_ 200 TEST_CAN_MESSAGE_1: 1 Vector__XXX
  SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
@@ -96,5 +131,16 @@ BO_ 2005 AS_MISSION: 1 Vector__XXX
 
 
 
-SIG_VALTYPE_ 50 Throttle_Percentage : 1;
-SIG_VALTYPE_ 1553 Rotation_Z : 1;
+SIG_VALTYPE_ 501 Throttle_Percentage : 1;
+SIG_VALTYPE_ 502 Throttle_Percentage : 1;
+SIG_VALTYPE_ 503 Hydraulic_Pressure : 1;
+SIG_VALTYPE_ 504 Hydraulic_Pressure : 1;
+SIG_VALTYPE_ 505 Brake_Disk_Temp : 1;
+SIG_VALTYPE_ 506 Brake_Disk_Temp : 1;
+SIG_VALTYPE_ 507 Damper_Position : 1;
+SIG_VALTYPE_ 508 Damper_Position : 1;
+SIG_VALTYPE_ 509 Pnuematic_Pressure : 1;
+SIG_VALTYPE_ 510 Pnuematic_Pressure : 1;
+SIG_VALTYPE_ 511 Pnuematic_Pressure : 1;
+SIG_VALTYPE_ 512 Steering_Position : 1;
+SIG_VALTYPE_ 513 Steering_Position : 1;

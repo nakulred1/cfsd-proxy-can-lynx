@@ -22,9 +22,20 @@ message opendlv.cfsdProxyCANReading.Test [id = 1001] {
   int testCanMessage3 [id = 3]; 
 }
 
-message opendlv.cfsdProxyCANReading.Apps [id = 1002] {
-  float throttlePercentage [id = 1];
-  int appsFault [id = 2];
+message opendlv.cfsdProxyCANReading.Sensors [id = 1002] {
+  float apps1throttlePercentage [id = 1];
+  float apps2throttlePercentage [id = 2];
+  float hydraulicPressure1 [id = 3];
+  float hydraulicPressure2 [id = 4];
+  float brakeDiscTemp1 [id = 5];
+  float brakeDiscTemp2 [id = 6];
+  float damperPosition1 [id = 7];
+  float damperPosition2 [id = 8];
+  float pnuematicPressure1 [id = 9];
+  float pnuematicPressure2 [id = 10];
+  float pnuematicPressure3 [id = 11];
+  float steeringPosition1 [id = 12];
+  float steeringPosition2 [id = 13];
 }
 
 message opendlv.cfsdProxyCANReading.NodeStatus [id = 1003] {

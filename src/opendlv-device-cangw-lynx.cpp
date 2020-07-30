@@ -131,13 +131,233 @@ int32_t main(int32_t argc, char **argv) {
 
                 }
             }            
-            else if (LYNX19GW_APPS_FRAME_ID == canFrameID) {
-                lynx19gw_apps_t tmp;
-                    if (0 == lynx19gw_apps_unpack(&tmp, src, len)) {
+            else if (LYNX19GW_APPS_1_FRAME_ID == canFrameID) {
+                lynx19gw_apps_1_t tmp;
+                    if (0 == lynx19gw_apps_1_unpack(&tmp, src, len)) {
                     {
-                        opendlv::cfsdProxyCANReading::Apps msg;
-                        msg.throttlePercentage(static_cast<float>(lynx19gw_apps_throttle_percentage_decode(tmp.throttle_percentage)));
-                        msg.appsFault(static_cast<uint8_t>(lynx19gw_apps_apps_fault_decode(tmp.apps_fault)));
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.apps1throttlePercentage(static_cast<float>(lynx19gw_apps_1_throttle_percentage_decode(tmp.throttle_percentage)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_APPS_2_FRAME_ID == canFrameID) {
+                lynx19gw_apps_2_t tmp;
+                    if (0 == lynx19gw_apps_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.apps2throttlePercentage(static_cast<float>(lynx19gw_apps_2_throttle_percentage_decode(tmp.throttle_percentage)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_HYDRAULIC_BRAKE_PRESSURE_1_FRAME_ID == canFrameID) {
+                lynx19gw_hydraulic_brake_pressure_1_t tmp;
+                    if (0 == lynx19gw_hydraulic_brake_pressure_1_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.hydraulicPressure1(static_cast<float>(lynx19gw_hydraulic_brake_pressure_1_hydraulic_pressure_decode(tmp.hydraulic_pressure)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_HYDRAULIC_BRAKE_PRESSURE_2_FRAME_ID == canFrameID) {
+                lynx19gw_hydraulic_brake_pressure_2_t tmp;
+                    if (0 == lynx19gw_hydraulic_brake_pressure_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.hydraulicPressure2(static_cast<float>(lynx19gw_hydraulic_brake_pressure_2_hydraulic_pressure_decode(tmp.hydraulic_pressure)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_HYDRAULIC_BRAKE_PRESSURE_2_FRAME_ID == canFrameID) {
+                lynx19gw_hydraulic_brake_pressure_2_t tmp;
+                    if (0 == lynx19gw_hydraulic_brake_pressure_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.hydraulicPressure2(static_cast<float>(lynx19gw_hydraulic_brake_pressure_2_hydraulic_pressure_decode(tmp.hydraulic_pressure)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_BRAKE_DISK_TEMP_1_FRAME_ID == canFrameID) {
+                lynx19gw_brake_disk_temp_1_t tmp;
+                    if (0 == lynx19gw_brake_disk_temp_1_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.brakeDiscTemp1(static_cast<float>(lynx19gw_brake_disk_temp_1_brake_disk_temp_decode(tmp.brake_disk_temp)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+                else if (LYNX19GW_BRAKE_DISK_TEMP_2_FRAME_ID == canFrameID) {
+                lynx19gw_brake_disk_temp_2_t tmp;
+                    if (0 == lynx19gw_brake_disk_temp_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.brakeDiscTemp2(static_cast<float>(lynx19gw_brake_disk_temp_2_brake_disk_temp_decode(tmp.brake_disk_temp)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_DAMPER_POSITION_1_FRAME_ID == canFrameID) {
+                lynx19gw_damper_position_1_t tmp;
+                    if (0 == lynx19gw_damper_position_1_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.damperPosition1(static_cast<float>(lynx19gw_damper_position_1_damper_position_decode(tmp.damper_position)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_DAMPER_POSITION_2_FRAME_ID == canFrameID) {
+                lynx19gw_damper_position_2_t tmp;
+                    if (0 == lynx19gw_damper_position_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.damperPosition2(static_cast<float>(lynx19gw_damper_position_2_damper_position_decode(tmp.damper_position)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_PNUEMATIC_PRESSURE_1_FRAME_ID == canFrameID) {
+                lynx19gw_pnuematic_pressure_1_t tmp;
+                    if (0 == lynx19gw_pnuematic_pressure_1_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.pnuematicPressure1(static_cast<float>(lynx19gw_pnuematic_pressure_1_pnuematic_pressure_decode(tmp.pnuematic_pressure)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_PNUEMATIC_PRESSURE_2_FRAME_ID == canFrameID) {
+                lynx19gw_pnuematic_pressure_2_t tmp;
+                    if (0 == lynx19gw_pnuematic_pressure_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.pnuematicPressure2(static_cast<float>(lynx19gw_pnuematic_pressure_2_pnuematic_pressure_decode(tmp.pnuematic_pressure)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_PNUEMATIC_PRESSURE_3_FRAME_ID == canFrameID) {
+                lynx19gw_pnuematic_pressure_3_t tmp;
+                    if (0 == lynx19gw_pnuematic_pressure_3_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.pnuematicPressure3(static_cast<float>(lynx19gw_pnuematic_pressure_3_pnuematic_pressure_decode(tmp.pnuematic_pressure)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_STEERING_POSITION_1_FRAME_ID == canFrameID) {
+                lynx19gw_steering_position_1_t tmp;
+                    if (0 == lynx19gw_steering_position_1_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.steeringPosition1(static_cast<float>(lynx19gw_steering_position_1_steering_position_decode(tmp.steering_position)));
+                        if (VERBOSE) {
+                            std::stringstream sstr;
+                            msg.accept([](uint32_t, const std::string &, const std::string &) {},
+                                       [&sstr](uint32_t, std::string &&, std::string &&n, auto v) { sstr << n << " = " << v << '\n'; },
+                                       []() {});
+                            std::cout << sstr.str() << std::endl;
+                        } 
+                        od4.send(msg, ts, ID);
+                    }
+                }
+            }
+            else if (LYNX19GW_STEERING_POSITION_2_FRAME_ID == canFrameID) {
+                lynx19gw_steering_position_2_t tmp;
+                    if (0 == lynx19gw_steering_position_2_unpack(&tmp, src, len)) {
+                    {
+                        opendlv::cfsdProxyCANReading::Sensors msg;
+                        msg.steeringPosition2(static_cast<float>(lynx19gw_steering_position_2_steering_position_decode(tmp.steering_position)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -154,8 +374,8 @@ int32_t main(int32_t argc, char **argv) {
                     if (0 == lynx19gw_front_node_status_unpack(&tmp, src, len)) {
                     {
                         opendlv::cfsdProxyCANReading::NodeStatus msg;
-                        msg.counter(static_cast<uint8_t>(lynx19gw_apps_throttle_percentage_decode(tmp.counter)));
-                        msg.readyToDrive(static_cast<uint8_t>(lynx19gw_apps_apps_fault_decode(tmp.ready_to_drive)));
+                        msg.counter(static_cast<uint8_t>(lynx19gw_front_node_status_counter_decode(tmp.counter)));
+                        msg.readyToDrive(static_cast<uint8_t>(lynx19gw_front_node_status_ready_to_drive_decode(tmp.ready_to_drive)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -172,8 +392,8 @@ int32_t main(int32_t argc, char **argv) {
                     if (0 == lynx19gw_autonomous_node_status_unpack(&tmp, src, len)) {
                     {
                         opendlv::cfsdProxyCANReading::NodeStatus msg;
-                        msg.counter(static_cast<uint8_t>(lynx19gw_apps_throttle_percentage_decode(tmp.counter)));
-                        msg.readyToDrive(static_cast<uint8_t>(lynx19gw_apps_apps_fault_decode(tmp.ready_to_drive)));
+                        msg.counter(static_cast<uint8_t>(lynx19gw_autonomous_node_status_counter_decode(tmp.counter)));
+                        msg.readyToDrive(static_cast<uint8_t>(lynx19gw_autonomous_node_status_ready_to_drive_decode(tmp.ready_to_drive)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
