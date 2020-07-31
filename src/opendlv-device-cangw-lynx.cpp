@@ -65,7 +65,6 @@ int32_t main(int32_t argc, char **argv) {
             if ( (nullptr == src) || (0 == len) ) return;
             
             const int16_t senderStampAsmsOn = 5005;
-            const int16_t senderStampSaAvailable = 5016;
             const int16_t senderStampResState = 5003;
             const int16_t senderStampResStopSignal = 5014;
             const int16_t senderStampResGoSignal = 5013;
@@ -618,15 +617,15 @@ int32_t main(int32_t argc, char **argv) {
         tmp.as_state = lynx19gw_safety_layer_as_state_encode(msgSafetyLayer.asState());
         tmp.as_heartbeat = lynx19gw_safety_layer_as_heartbeat_encode(msgSafetyLayer.asHeartbeat());
         //Packing the messages to a CAN Frame
-        uint8_t buffer[2];
-        int len = lynx19gw_safety_layer_pack(buffer, &tmp, 2);
+        uint8_t buffer[3];
+        int len = lynx19gw_safety_layer_pack(buffer, &tmp, 3);
         if ((0 < len) && (-1 < socketCAN))
         {
 #ifdef __linux__
             struct can_frame frame;
             frame.can_id = LYNX19GW_SAFETY_LAYER_FRAME_ID;
             frame.can_dlc = len;
-            memcpy(frame.data, buffer, 2);
+            memcpy(frame.data, buffer, 3);
             int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
             if (VERBOSE)
             {
