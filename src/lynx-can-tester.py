@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 from pynput.keyboard import Key, Listener
 import can
 
@@ -38,12 +37,12 @@ def check_key(key):
         can_bus.send(message)
     elif str(key) == "'d'": # AS OFF > AS READY
         print("Success!")
-        data = safetylayer_message.encode({'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 0, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 0, 'Finished_Signal': 0})
+        data = safetylayer_message.encode({'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 0, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 0, 'Finished_Signal': 0, 'AS_State': 0, 'AS_Heartbeat': 0})
         message = can.Message(arbitration_id=safetylayer_message.frame_id, data=data)
         can_bus.send(message)  
     elif str(key) == "'f'": # AS READY > AS DRIVING
         print("Success!")
-        data = safetylayer_message.encode({'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 1, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 1, 'Finished_Signal': 0})
+        data = safetylayer_message.encode({'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 1, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 1, 'Finished_Signal': 0, 'AS_State': 0, 'AS_Heartbeat': 1})
         message = can.Message(arbitration_id=safetylayer_message.frame_id, data=data)
         can_bus.send(message)
     else:

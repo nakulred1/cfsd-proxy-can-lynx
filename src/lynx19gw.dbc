@@ -114,6 +114,8 @@ BO_ 2001 SAFETY_LAYER: 2 Vector__XXX
  SG_ TS_On : 6|1@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Wait_To_Drive : 7|1@1+ (1,0) [0|0] "" Vector__XXX
  SG_ Finished_Signal : 8|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ AS_State : 9|4@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ AS_Heartbeat : 13|1@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 2002 VEHICLE_SPEED: 8 Vector__XXX
  SG_ WHEEL_FRONT_RIGHT : 0|16@1+ (1,0) [0|0] "" Vector__XXX

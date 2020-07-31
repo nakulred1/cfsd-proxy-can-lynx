@@ -587,6 +587,64 @@ int32_t main(int32_t argc, char **argv) {
         return retCode;
 #endif
 
+
+// Writing messages onto the CAN Bus
+    
+    //Status messages from Safety Layer
+    opendlv::cfsdProxyCANWriting::SafetyLayer msgSafetyLayer;
+    auto onSwitchStateRequest = [&msgSafetyLayer,&socketCAN,VERBOSE](cluon::data::Envelope &&env) {
+        const int16_t senderStampAsState = 5001;
+        const int16_t senderStampAsHeartbeat = 5000;
+        opendlv::proxy::SwitchStateRequest stateRequest = cluon::extractMessage<opendlv::proxy::SwitchStateRequest>(std::move(env));
+        if (env.senderStamp() == senderStampAsState)
+        {
+            msgSafetyLayer.asState(stateRequest.state());
+            if (VERBOSE)
+            {
+                std::cerr<<" Writing asState: " << stateRequest.state() <<std::endl; 
+            }
+            
+        }
+        else if (env.senderStamp() == senderStampAsHeartbeat)   
+        {
+            msgSafetyLayer.asHeartbeat(stateRequest.state());
+            if (VERBOSE)
+            {
+                std::cerr<<" Writing asHeartbeat: " << stateRequest.state() <<std::endl; 
+            }
+        }
+        lynx19gw_safety_layer_t tmp;
+        memset(&tmp, 0, sizeof(tmp));
+        tmp.as_state = lynx19gw_safety_layer_as_state_encode(msgSafetyLayer.asState());
+        tmp.as_heartbeat = lynx19gw_safety_layer_as_heartbeat_encode(msgSafetyLayer.asHeartbeat());
+        //Packing the messages to a CAN Frame
+        uint8_t buffer[2];
+        int len = lynx19gw_safety_layer_pack(buffer, &tmp, 2);
+        if ((0 < len) && (-1 < socketCAN))
+        {
+#ifdef __linux__
+            struct can_frame frame;
+            frame.can_id = LYNX19GW_SAFETY_LAYER_FRAME_ID;
+            frame.can_dlc = len;
+            memcpy(frame.data, buffer, 2);
+            int32_t nbytes = ::write(socketCAN, &frame, sizeof(struct can_frame));
+            if (VERBOSE)
+            {
+                std::clog<<"Wrote State Message!!"<<std::endl;
+            }
+            if (!(0 < nbytes))
+            {
+                std::clog << "[SocketCANDevice] Writing ID = " << frame.can_id << ", LEN = " << +frame.can_dlc << ", strerror(" << errno << "): '" << strerror(errno) << "'" <<std::endl;
+            }
+            
+            
+#endif
+        }
+        
+    };
+    od4.dataTrigger(opendlv::proxy::SwitchStateRequest::ID(), onSwitchStateRequest);
+
+
         struct can_frame frame;
         fd_set rfds;
         struct timeval timeout;

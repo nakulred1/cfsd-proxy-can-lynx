@@ -80,7 +80,7 @@ message opendlv.cfsdProxyCANReading.ASMission [id = 2005] {
 
 message opendlv.cfsdProxyCANWriting.SafetyLayer [id = 2006] {
   bool asHeartbeat [id = 1];
-  bool asStateSelect [id = 2];
+  bool asState [id = 2];
 }
 
 message opendlv.cfsdProxyCANReading.SteeringEmcl [id = 2007] {
