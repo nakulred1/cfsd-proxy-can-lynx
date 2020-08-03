@@ -118,10 +118,8 @@ BO_ 2001 SAFETY_LAYER: 3 Vector__XXX
  SG_ AS_Heartbeat : 17|1@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 2002 VEHICLE_SPEED: 8 Vector__XXX
- SG_ WHEEL_FRONT_RIGHT : 0|16@1+ (1,0) [0|0] "" Vector__XXX
- SG_ WHEEL_FRONT_LEFT : 16|16@1+ (1,0) [0|0] "" Vector__XXX
- SG_ WHEEL_REAR_RIGHT : 32|16@1+ (1,0) [0|0] "" Vector__XXX
- SG_ WHEEL_REAR_LEFT : 48|16@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ WHEEL_FRONT_RIGHT : 0|32@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ WHEEL_FRONT_LEFT : 32|32@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 2003 EBS: 2 Vector__XXX
  SG_ EBS_State : 0|8@1+ (1,0) [0|0] "" Vector__XXX
@@ -147,3 +145,5 @@ SIG_VALTYPE_ 510 Pnuematic_Pressure : 1;
 SIG_VALTYPE_ 511 Pnuematic_Pressure : 1;
 SIG_VALTYPE_ 512 Steering_Position : 1;
 SIG_VALTYPE_ 513 Steering_Position : 1;
+SIG_VALTYPE_ 2002 WHEEL_FRONT_RIGHT : 1;
+SIG_VALTYPE_ 2002 WHEEL_FRONT_LEFT : 1;

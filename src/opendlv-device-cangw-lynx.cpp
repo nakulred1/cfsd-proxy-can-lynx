@@ -470,10 +470,8 @@ int32_t main(int32_t argc, char **argv) {
                     if (0 == lynx19gw_vehicle_speed_unpack(&tmp, src, len)) {
                     {
                         opendlv::cfsdProxyCANReading::VehicleSpeed msg;
-                        msg.wheelFrontRight(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_front_right_decode(tmp.wheel_front_right)));
-                        msg.wheelFrontLeft(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_front_left_decode(tmp.wheel_front_left)));
-                        msg.wheelRearRight(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_rear_right_decode(tmp.wheel_rear_right)));
-                        msg.wheelRearLeft(static_cast<uint16_t>(lynx19gw_vehicle_speed_wheel_rear_left_decode(tmp.wheel_rear_left)));
+                        msg.wheelFrontRight(static_cast<float>(lynx19gw_vehicle_speed_wheel_front_right_decode(tmp.wheel_front_right)));
+                        msg.wheelFrontLeft(static_cast<float>(lynx19gw_vehicle_speed_wheel_front_left_decode(tmp.wheel_front_left)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},

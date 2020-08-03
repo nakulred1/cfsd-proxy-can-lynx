@@ -39,8 +39,6 @@ lynx19gw_safety_layer_t.finished_signal:
 lynx19gw_safety_layer_t.as_heartbeat:
 lynx19gw_vehicle_speed_t.wheel_front_right:
 lynx19gw_vehicle_speed_t.wheel_front_left:
-lynx19gw_vehicle_speed_t.wheel_rear_right:
-lynx19gw_vehicle_speed_t.wheel_rear_left:
 lynx19gw_ebs_t.ebs_state:
 lynx19gw_ebs_t.ebs_armed:
 lynx19gw_ebs_t.ebs_activated:

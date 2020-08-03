@@ -26,8 +26,7 @@ def check_key(key):
     # Put Your Code Here:
     """
     if str(key) == "'a'": # Mission select messsage
-        print("Success!")
-        data = missionselect_message.encode({'Mission_Select': 4})
+waitToDrive = 0_Select': 4})
         message = can.Message(arbitration_id=missionselect_message.frame_id, data=data)
         can_bus.send(message)
     elif str(key) == "'s'": # Set EBS Armed
@@ -37,12 +36,12 @@ def check_key(key):
         can_bus.send(message)
     elif str(key) == "'d'": # AS OFF > AS READY
         print("Success!")
-        data = safetylayer_message.encode({'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 0, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 0, 'Finished_Signal': 0, 'AS_State': 0, 'AS_Heartbeat': 0})
+        data = safetylayer_message.encode({'AS_State': 0, 'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 0, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 0, 'Finished_Signal': 0, 'AS_Heartbeat': 0})
         message = can.Message(arbitration_id=safetylayer_message.frame_id, data=data)
         can_bus.send(message)  
     elif str(key) == "'f'": # AS READY > AS DRIVING
         print("Success!")
-        data = safetylayer_message.encode({'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 1, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 1, 'Finished_Signal': 0, 'AS_State': 0, 'AS_Heartbeat': 1})
+        data = safetylayer_message.encode({'AS_State': 0, 'ASMS_On': 1, 'RES_State': 0, 'RES_Stop_Signal': 0, 'RES_Go_Signal': 1, 'RES_Initialized': 1, 'Brakes_Released': 0, 'TS_On': 1, 'Wait_To_Drive': 1, 'Finished_Signal': 0, 'AS_Heartbeat': 1})
         message = can.Message(arbitration_id=safetylayer_message.frame_id, data=data)
         can_bus.send(message)
     else:

@@ -56,10 +56,8 @@ message opendlv.cfsdProxyCANReading.SafetyLayer [id = 2001] {
 } 
 
 message opendlv.cfsdProxyCANReading.VehicleSpeed [id = 2002] {
-  int wheelFrontRight [id = 1];
-  int wheelFrontLeft [id = 2];
-  int wheelRearRight [id = 3];
-  int wheelRearLeft [id = 4];
+  float wheelFrontRight [id = 1];
+  float wheelFrontLeft [id = 2];
 } 
 
 message opendlv.cfsdProxyCANReading.EBS [id = 2003] {
