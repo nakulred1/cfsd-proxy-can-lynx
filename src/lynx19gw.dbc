@@ -104,7 +104,7 @@ BO_ 201 TEST_CAN_MESSAGE_2: 1 Vector__XXX
 BO_ 202 TEST_CAN_MESSAGE_3: 1 Vector__XXX
  SG_ Test_Message : 0|8@1+ (1,0) [0|0] "" Vector__XXX
 
-BO_ 2001 SAFETY_LAYER: 3 Vector__XXX
+BO_ 2001 SAFETY_LAYER: 2 Vector__XXX
  SG_ AS_State : 0|8@1+ (1,0) [0|0] "" Vector__XXX
  SG_ ASMS_On : 8|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ RES_State : 9|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -113,9 +113,7 @@ BO_ 2001 SAFETY_LAYER: 3 Vector__XXX
  SG_ RES_Initialized : 12|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Brakes_Released : 13|1@1+ (1,0) [0|0] "" Vector__XXX
  SG_ TS_On : 14|1@1+ (1,0) [0|0] "" Vector__XXX
- SG_ Wait_To_Drive : 15|1@1+ (1,0) [0|0] "" Vector__XXX
- SG_ Finished_Signal : 16|1@1+ (1,0) [0|0] "" Vector__XXX
- SG_ AS_Heartbeat : 17|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ AS_Heartbeat : 15|1@1+ (1,0) [0|0] "" Vector__XXX
 
 BO_ 2002 VEHICLE_SPEED: 8 Vector__XXX
  SG_ WHEEL_FRONT_RIGHT : 0|32@1+ (1,0) [0|0] "" Vector__XXX

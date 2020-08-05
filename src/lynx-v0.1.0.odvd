@@ -51,8 +51,6 @@ message opendlv.cfsdProxyCANReading.SafetyLayer [id = 2001] {
   bool resInitialized [id = 5];
   bool brakesReleased [id = 6];
   bool tsOn [id = 7];
-  bool waitToDrive [id = 8];
-  bool finishedSignal [id = 9];
 } 
 
 message opendlv.cfsdProxyCANReading.VehicleSpeed [id = 2002] {
@@ -79,10 +77,6 @@ message opendlv.cfsdProxyCANReading.ASMission [id = 2005] {
 message opendlv.cfsdProxyCANWriting.SafetyLayer [id = 2006] {
   bool asHeartbeat [id = 1];
   bool asState [id = 2];
-}
-
-message opendlv.cfsdProxyCANReading.SteeringEmcl [id = 2007] {
-  bool saHeartbeat [id = 1];
 }
 
 

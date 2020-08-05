@@ -69,12 +69,10 @@ int32_t main(int32_t argc, char **argv) {
             const int16_t senderStampResStopSignal = 5014;
             const int16_t senderStampResGoSignal = 5013;
             const int16_t senderStampResInitialized = 5018;
-            const int16_t senderStampFinishSignal = 5015;
             const int16_t senderStampEbsState = 5002;
             const int16_t senderStampEbsArmed = 5008;
             const int16_t senderStampEbsActivated = 5009;
             const int16_t senderStampEbsSpeakerOn = 5010;
-            const int16_t senderStampWaitToDrive = 5011;
             const int16_t senderStampBrakesReleased = 5007;
             const int16_t senderStampTsOn = 5006;
             const int16_t senderStampAsMission = 5004;
@@ -417,8 +415,6 @@ int32_t main(int32_t argc, char **argv) {
                         msg.resInitialized(0 < std::fabs(lynx19gw_safety_layer_res_initialized_decode(tmp.res_initialized)));
                         msg.brakesReleased(0 < std::fabs(lynx19gw_safety_layer_brakes_released_decode(tmp.brakes_released)));
                         msg.tsOn(0 < std::fabs(lynx19gw_safety_layer_ts_on_decode(tmp.ts_on)));
-                        msg.waitToDrive(0 < std::fabs(lynx19gw_safety_layer_wait_to_drive_decode(tmp.wait_to_drive)));
-                        msg.finishedSignal(0 < std::fabs(lynx19gw_safety_layer_finished_signal_decode(tmp.finished_signal)));
                         if (VERBOSE) {
                             std::stringstream sstr;
                             msg.accept([](uint32_t, const std::string &, const std::string &) {},
@@ -454,14 +450,6 @@ int32_t main(int32_t argc, char **argv) {
                         opendlv::proxy::SwitchStateRequest msgTsOn;
                         msgTsOn.state(msg.tsOn());
                         od4.send(msgTsOn, ts, senderStampTsOn);
-
-                        opendlv::proxy::SwitchStateRequest msgWaitToDrive;
-                        msgWaitToDrive.state(msg.waitToDrive());
-                        od4.send(msgWaitToDrive, ts, senderStampWaitToDrive);
-
-                        opendlv::proxy::SwitchStateRequest msgFinishedSignal;
-                        msgFinishedSignal.state(msg.finishedSignal());
-                        od4.send(msgFinishedSignal, ts, senderStampFinishSignal);
                     }
                 }
             }
